@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Supports de Cours — Christine Saintobin</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
+
+        body {
+            margin: 0;
+            padding: 80px 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fff;
+            color: #1a1a1a;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        nav {
+            text-align: center;
+            margin-bottom: 80px;
+            text-transform: uppercase;
+            font-size: 0.8em;
+            letter-spacing: 2px;
+        }
+
+        nav a { text-decoration: none; color: #999; margin: 0 15px; transition: 0.3s; }
+        nav a:hover { color: #000; }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            font-weight: 400;
+        }
+
+        .subtitle {
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: #b22222;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .card {
+            border: 1px solid #eee;
+            padding: 40px;
+            background-color: #fff;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            border-color: #b22222;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .card-tag {
+            font-size: 0.7em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #b22222;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6em;
+            font-style: italic;
+            margin: 0 0 20px 0;
+            color: #1a1a1a;
+        }
+
+        .card p {
+            font-size: 0.95em;
+            font-weight: 300;
+            color: #444;
+            margin-bottom: 30px;
+            flex-grow: 1;
+        }
+
+        .card-link {
+            text-decoration: none;
+            color: #1a1a1a;
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            border-bottom: 1px solid #b22222;
+            align-self: flex-start;
+            padding-bottom: 2px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 100px;
+            font-size: 0.7em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #bbb;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html">Accueil</a>
+        <a href="cv.html">Parcours</a>
+        <a href="philosophie.html">Philosophie</a>
+        <a href="plans.html">Séquences</a>
+    </nav>
+
+    <div class="container">
+        <h1>Ressources Pédagogiques</h1>
+        <div class="subtitle">Didactique du Français & Innovation Immersive</div>
+
+        <div class="grid">
+            
+            <div class="card">
+                <span class="card-tag">Littérature & FLS</span>
+                <h2>Le Comte de Monte-Cristo</h2>
+                <p>Stratégies d'accès au texte intégral pour le cycle secondaire. Utilisation du carnet de lecture numérique et activités ludiques (Pendu interactif) pour lever les obstacles lexicaux.</p>
+                <a href="detail-litterature.html" class="card-link">Consulter la séquence</a>
+            </div>
+
+            <div class="card">
+                <span class="card-tag">Cycle 1 / Perception</span>
+                <h2>Tangram & Contraste Rayé</h2>
+                <p>Projet de préparation à l'immersion : l'utilisation du Tangram rayé contrasté avec lunettes 3D en Grande Section pour construire la vision spatiale sans passer par le choséisme.</p>
+                <a href="detail-vr.html" class="card-link">Découvrir l'approche</a>
+            </div>
+
+            <div class="card">
+                <span class="card-tag">Langue & Grammaire</span>
+                <h2>La Modalisation</h2>
+                <p>Étude des marques de subjectivité dans le discours. Comment l'énonciateur manifeste son attitude envers son propos à travers les adverbes, les modes verbaux et le lexique mélioratif/péjoratif.</p>
+                <a href="detail-modalisation.html" class="card-link">Voir les supports</a>
+            </div>
+
+            <div class="card">
+                <span class="card-tag">Compétences Critiques</span>
+                <h2>L'Argumentation</h2>
+                <p>Apprendre à décoder l'information et la publicité (Ressource L'Actuel). Travail sur la thèse, les arguments et les exemples pour former des citoyens critiques et capables de débattre.</p>
+                <a href="detail-argumentation.html" class="card-link">Explorer le module</a>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        © 2026 Christine Saintobin — Expertise Pédagogique
+    </footer>
+
+</body>
+</html>
