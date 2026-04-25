@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Album CE2 — Christine Saintobin</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
+
+        body { margin: 0; padding: 40px 0; font-family: 'Montserrat', sans-serif; background-color: #fff; color: #1a1a1a; text-align: center; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 40px; }
+        
+        /* Navigation : Lien album retiré du haut comme demandé */
+        nav { margin-bottom: 60px; text-transform: uppercase; font-size: 0.75em; letter-spacing: 2px; }
+        nav a { text-decoration: none; color: #999; margin: 0 15px; transition: 0.3s; }
+        nav a:hover { color: #1a1a1a; border-bottom: 1px solid #b22222; }
+
+        h1 { font-family: 'Playfair Display', serif; font-size: 2.5em; font-weight: 400; margin-bottom: 40px; }
+
+        /* Carrousel - Images nettes et pas trop grosses */
+        .carousel-wrapper { position: relative; width: 100%; max-width: 800px; margin: 0 auto; overflow: hidden; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .carousel-track { display: flex; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        .slide { min-width: 100%; box-sizing: border-box; background: #fff; }
+        .slide img { width: 100%; height: 450px; object-fit: contain; background-color: #fafafa; }
+        
+        .slide-content { padding: 30px; background: #fff; }
+        .slide-content h3 { font-family: 'Playfair Display', serif; margin: 0 0 10px 0; font-size: 1.5em; font-weight: 400; }
+        .slide-content p { font-weight: 300; color: #555; font-size: 0.9em; line-height: 1.6; max-width: 600px; margin: 0 auto; }
+
+        /* Contrôles */
+        .nav-btn { position: absolute; top: 45%; transform: translateY(-50%); background: rgba(255,255,255,0.9); border: none; font-size: 1.5em; cursor: pointer; width: 45px; height: 45px; border-radius: 50%; z-index: 10; transition: 0.3s; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .nav-btn:hover { color: #b22222; background: #fff; }
+        .prev { left: 15px; }
+        .next { right: 15px; }
+
+        footer { margin-top: 80px; font-size: 0.6em; text-transform: uppercase; letter-spacing: 2px; color: #bbb; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html">Accueil</a>
+        <a href="philosophie.html">Philosophie</a>
+        <a href="outils.html">Outils</a>
+        <a href="sequences.html">Séquences</a>
+    </nav>
+
+    <div class="container">
+        <h1>Album des Projets CE2</h1>
+
+        <div class="carousel-wrapper">
+            <button class="nav-btn prev" onclick="moveSlide(-1)">❮</button>
+            <button class="nav-btn next" onclick="moveSlide(1)">❯</button>
+            
+            <div class="carousel-track" id="track">
+                <div class="slide">
+                    <img src="site ce2 - geom RA.JPG" alt="Géométrie RA">
+                    <div class="slide-content">
+                        <h3>Géométrie en Réalité Augmentée</h3>
+                        <p>Visualisation des solides et autocorrection interactive pour une meilleure perception spatiale.</p>
+                    </div>
+                </div>
+
+                <div class="slide">
+                    <img src="site ce2 - lego wedo.JPG" alt="Lego Wedo">
+                    <div class="slide-content">
+                        <h3>Initiation à la Robotique</h3>
+                        <p>Construction et programmation avec LEGO WeDo : apprendre à animer des engrenages par le code.</p>
+                    </div>
+                </div>
+
+                <div class="slide">
+                    <img src="site ce2 - tv oyon beirut2.JPG" alt="Sortie TV">
+                    <div class="slide-content">
+                        <h3>Reportage : Ouyoun Beirut</h3>
+                        <p>Découverte des coulisses d'un plateau de télévision et interview avec les professionnels des médias.</p>
+                    </div>
+                </div>
+
+                <div class="slide">
+                    <img src="site ce2 - VR.JPG" alt="VR Venise">
+                    <div class="slide-content">
+                        <h3>Voyage Virtuel à Venise</h3>
+                        <p>Immersion totale sur la place Saint-Marc pour enrichir la culture générale et géographique.</p>
+                    </div>
+                </div>
+
+                <div class="slide">
+                    <img src="site ce2 - twitter.JPG" alt="Twittclasse">
+                    <div class="slide-content">
+                        <h3>Twittclasse</h3>
+                        <p>Échanges pédagogiques et travail sur la vigilance orthographique via les réseaux sociaux.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>© 2026 Christine Saintobin</footer>
+    </div>
+
+    <script>
+        let index = 0;
+        function moveSlide(step) {
+            const track = document.getElementById('track');
+            const slides = document.querySelectorAll('.slide');
+            index += step;
+            if (index >= slides.length) index = 0;
+            if (index < 0) index = slides.length - 1;
+            track.style.transform = `translateX(${-index * 100}%)`;
+        }
+    </script>
+</body>
+</html>
