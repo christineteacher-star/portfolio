@@ -1,0 +1,219 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Album : Projets Numériques — Christine Saintobin</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
+
+        :root {
+            --primary: #b22222;
+            --text: #1a1a1a;
+            --bg: #ffffff;
+        }
+
+        html, body { 
+            margin: 0; padding: 0; height: 100%; width: 100%;
+            overflow: hidden; font-family: 'Montserrat', sans-serif; 
+            background-color: var(--bg); color: var(--text);
+        }
+
+        .main-layout {
+            display: flex; flex-direction: column; height: 100vh;
+            padding: 10px 0;
+            box-sizing: border-box;
+        }
+
+        nav { text-align: center; margin-bottom: 10px; text-transform: uppercase; font-size: 0.8em; letter-spacing: 2px; }
+        nav a { text-decoration: none; color: #999; margin: 0 15px; transition: 0.3s; }
+        nav a:hover { color: var(--primary); }
+
+        header { text-align: center; margin-bottom: 5px; }
+        header h1 { font-family: 'Playfair Display', serif; font-size: 2em; margin: 0; font-weight: 400; }
+        .subtitle { font-size: 0.7em; text-transform: uppercase; letter-spacing: 3px; color: var(--primary); font-weight: 600; }
+
+        .gallery-container {
+            flex-grow: 1; position: relative; width: 100%;
+            display: flex; align-items: center; justify-content: center;
+            perspective: 1200px;
+        }
+
+        .slide {
+            position: absolute; 
+            width: 520px; /* Taille augmentée */
+            height: 440px;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column; align-items: center;
+            opacity: 0; pointer-events: none;
+        }
+
+        .slide.active { opacity: 1; z-index: 10; transform: translateX(0) scale(1.05); pointer-events: auto; }
+        .slide.prev { opacity: 0.4; z-index: 5; transform: translateX(-380px) scale(0.75); pointer-events: auto; }
+        .slide.next { opacity: 0.4; z-index: 5; transform: translateX(380px) scale(0.75); pointer-events: auto; }
+
+        .image-wrapper {
+            width: 100%; height: 300px; /* Cadre plus grand */
+            background: #ffffff;
+            border-radius: 4px;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .slide img { 
+            max-width: 98%; 
+            max-height: 98%; 
+            object-fit: contain;
+            background-color: #fff;
+        }
+
+        .caption {
+            margin-top: 18px; text-align: center; width: 100%;
+            transition: opacity 0.3s; opacity: 0;
+            height: 95px;
+        }
+        .slide.active .caption { opacity: 1; }
+
+        .caption h3 { font-family: 'Playfair Display', serif; font-size: 1.3em; margin: 0 0 6px 0; color: var(--primary); }
+        
+        .caption p { 
+            font-size: 0.82em; /* Écriture plus grande */
+            color: #444; 
+            line-height: 1.5; 
+            margin: 0 auto;
+            width: 480px; /* Largeur adaptée au slide */
+            height: 3.1em; 
+            text-align: justify; 
+            text-justify: inter-word;
+            display: block;
+        }
+
+        .controls { display: flex; justify-content: center; align-items: center; gap: 60px; padding: 15px 0; z-index: 20; }
+        .nav-btn { background: none; border: none; font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2em; cursor: pointer; color: #bbb; transition: 0.3s; }
+        .nav-btn:hover { color: var(--primary); }
+        .counter { font-size: 0.75em; color: #999; letter-spacing: 2px; }
+
+        @media (max-width: 850px) {
+            .slide { width: 90%; }
+            .caption p { width: 95%; font-size: 0.75em; }
+            .slide.prev, .slide.next { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-layout">
+        <nav>
+            <a href="index.html">Accueil</a>
+            <a href="philosophie.html">Philosophie</a>
+            <a href="projets.html">Projets</a>
+            <a href="sequences.html">Séquences</a>
+        </nav>
+
+        <header>
+            <h1>Album : Projets Numériques</h1>
+            <div class="subtitle">Immersion & Innovation</div>
+        </header>
+
+        <div class="gallery-container" id="gallery">
+            <div class="slide">
+                <div class="image-wrapper"><img src="site GS - RA.JPG" alt="RA"></div>
+                <div class="caption">
+                    <h3>Sciences & Réalité Augmentée</h3>
+                    <p>Découverte du cycle de vie de la tortue marine via un coloriage animé en 3D. Ce dispositif innovant favorise une observation précise et la mémorisation durable des notions clés du programme.</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="image-wrapper"><img src="twitterature-2017.png" alt="Twittérature"></div>
+                <div class="caption">
+                    <h3>Twittérature : Écrire sous critères</h3>
+                    <p>Un projet collaboratif de rédaction visant la concision et l'impact du message écrit. Les élèves produisent un texte percutant tout en respectant strictement les divers codes de l'écriture numérique.</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="image-wrapper"><img src="referLFIE.jpg" alt="VR Art"></div>
+                <div class="caption">
+                    <h3>VR : Entrer dans l'œuvre d'art</h3>
+                    <p>Exploration immersive d'une œuvre célèbre pour en saisir la perspective réelle. Ce projet permet aux élèves de retranscrire l'espace intérieur par le biais d'un travail de dessin direct et précis.</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="image-wrapper"><img src="site ce2 - VR.JPG" alt="Géo VR"></div>
+                <div class="caption">
+                    <h3>Géographie : Visite de Venise en VR</h3>
+                    <p>Immersion totale sur la place Saint-Marc pour enrichir la culture des élèves. Une balade virtuelle au cœur de l'Italie pour clore l'étude des grandes villes présentes partout dans le monde entier.</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="image-wrapper"><img src="site ce2 - lego wedo.JPG" alt="Robotique"></div>
+                <div class="caption">
+                    <h3>Robotique Lego WeDo</h3>
+                    <p>Développement de la pensée informatique par la programmation concrète de moteurs. Les élèves conçoivent des structures mobiles dotées de plusieurs capteurs intelligents et totalement autonomes.</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="image-wrapper"><img src="site ce2 - tv oyon beirut.JPG" alt="EMI"></div>
+                <div class="caption">
+                    <h3>Studio Radio & TV</h3>
+                    <p>Mise en situation médiatique réelle pour travailler l'oralité et le discours construit. Les élèves découvrent les rouages essentiels de la création d'une information fiable, vérifiée et structurée.</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="image-wrapper"><img src="site ce2 - frisechrono.JPG" alt="Frise"></div>
+                <div class="caption">
+                    <h3>Spatialisation du Temps</h3>
+                    <p>Construction d'une frise pour matérialiser la chronologie historique de façon réelle. Un outil physique précieux pour aider les élèves à se repérer facilement dans les grandes époques mondiales.</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="image-wrapper"><img src="laureate rallye plurilingue AEFE.jpg" alt="AEFE"></div>
+                <div class="caption">
+                    <h3>Classe de CE2 : Lauréate AEFE</h3>
+                    <p>Félicitations aux élèves, lauréats du Rallye plurilingue et interculturel. Ce prix récompense leur bel engagement dans la découverte des diverses cultures du monde entier au sein de ce vaste réseau.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="nav-btn" onclick="changeSlide(-1)">Précédent</button>
+            <span class="counter" id="slide-counter">1 / 8</span>
+            <button class="nav-btn" onclick="changeSlide(1)">Suivant</button>
+        </div>
+    </div>
+
+    <script>
+        let currentIdx = 0;
+        const slides = document.querySelectorAll('.slide');
+        const counter = document.getElementById('slide-counter');
+
+        function updateSlides() {
+            slides.forEach((slide, idx) => {
+                slide.classList.remove('active', 'prev', 'next');
+                if (idx === currentIdx) {
+                    slide.classList.add('active');
+                } else if (idx === (currentIdx - 1 + slides.length) % slides.length) {
+                    slide.classList.add('prev');
+                } else if (idx === (currentIdx + 1) % slides.length) {
+                    slide.classList.add('next');
+                }
+            });
+            counter.innerText = `${currentIdx + 1} / ${slides.length}`;
+        }
+
+        function changeSlide(step) {
+            currentIdx = (currentIdx + step + slides.length) % slides.length;
+            updateSlides();
+        }
+
+        updateSlides();
+    </script>
+</body>
+</html>
