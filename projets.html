@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Outils — Christine Saintobin</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
+
+        body { margin: 0; padding: 80px 0; font-family: 'Montserrat', sans-serif; background-color: #fff; color: #1a1a1a; line-height: 1.8; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 40px; }
+        
+        nav { text-align: center; margin-bottom: 80px; text-transform: uppercase; font-size: 0.8em; letter-spacing: 2px; }
+        nav a { text-decoration: none; color: #999; margin: 0 15px; transition: 0.3s; }
+        nav a:hover, nav a.active { color: #b22222; }
+
+        header { text-align: center; margin-bottom: 70px; }
+        h1 { font-family: 'Playfair Display', serif; font-size: 2.8em; margin-bottom: 10px; font-weight: 400; letter-spacing: 2px; }
+        .subtitle { font-size: 0.85em; text-transform: uppercase; letter-spacing: 4px; color: #b22222; font-weight: 600; }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .card { border: 1px solid #eee; padding: 40px; background-color: #fff; transition: all 0.4s ease; display: flex; flex-direction: column; }
+        .card:hover { border-color: #b22222; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+
+        .card-tag { font-size: 0.7em; text-transform: uppercase; letter-spacing: 2px; color: #b22222; font-weight: 600; margin-bottom: 15px; }
+        .card h2 { font-family: 'Playfair Display', serif; font-size: 1.6em; font-style: italic; margin: 0 0 20px 0; color: #1a1a1a; }
+        .card p { font-size: 0.95em; font-weight: 300; color: #444; margin-bottom: 30px; flex-grow: 1; }
+
+        .card-link { text-decoration: none; color: #1a1a1a; font-size: 0.75em; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; border-bottom: 1px solid #b22222; align-self: flex-start; padding-bottom: 2px; transition: 0.3s; }
+        .card-link:hover { color: #b22222; }
+
+        footer { text-align: center; margin-top: 100px; font-size: 0.7em; text-transform: uppercase; letter-spacing: 2px; color: #bbb; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Accueil</a>
+        <a href="philosophie.html">Philosophie</a>
+        <a href="projets.html" class="active">Projets</a>
+        <a href="sequences.html">Séquences</a>
+    </nav>
+    <div class="container">
+        <header>
+            <h1>Laboratoire d'Ingénierie Pédagogique</h1>
+            <div class="subtitle">Ressources Didactiques</div>
+        </header>
+        <div class="grid">
+            <div class="card">
+                <span class="card-tag">Linguistique</span>
+                <h2>Modalisation</h2>
+                <p>Cette séquence permet aux élèves de prendre conscience que tout discours est une construction                 et que les choix lexicaux et grammaticaux ne sont jamais neutres. En maîtrisant ces outils, ils                 deviennent des lecteurs et des producteurs de textes plus avertis, capables de décrypter les                 stratégies persuasives dans les médias comme dans les discours politiques.</p>
+                <a href="modalisation.html" class="card-link">Accéder</a>
+            </div>
+            <div class="card">
+                <span class="card-tag">Éloquence</span>
+                <h2>Argumentation</h2>
+                <p>Cette séquence apprend aux élèves à transformer un constat critique en projet constructif par                 la maîtrise du pitch. En alliant structuration logique et impact visuel, ils développent une                 parole convaincante et résiliente, capable de porter des solutions innovantes. Ils deviennent                 ainsi des orateurs responsables, prêts à défendre leurs idées avec force et précision.</p>
+                <a href="argumentation.html" class="card-link">Accéder</a>
+            </div>
+            <div class="card">
+                <span class="card-tag">Neuro-pédagogie</span>
+                <h2>Anaglyphe</h2>
+                <p>Distinguée par le Prix AFLEC Pierre Vandevoorde 2019 à Beyrouth, cette séquence de Grande Section s'articule autour d'une ingénierie didactique qui fusionne motricité fine, arts plastiques et heuristique scientifique. En opérant une transition métaphorique du corps postural au relief optique, le projet sublime la structuration spatiale et l'assimilation d'un lexique technique exigeant, illustrant ainsi une pédagogie de l'excellence et de l'interdisciplinarité.</p>
+                <a href="concours.html" class="card-link">Accéder</a>
+            </div>
+            <div class="card">
+                <span class="card-tag">Autonomie</span>
+                <h2>Métacognition</h2>
+                <p>Ce dispositif de « Vigilance Autonome » au cycle 4 transforme l'erreur en levier d'apprentissage. Articulé autour du diagnostic, de l'analyse réflexive et de la remédiation numérique, il intègre un protocole de relecture rigoureux (Fiche 10). Cette ingénierie neuro-pédagogique développe l'autonomie, l'esprit critique et l'inclusion des élèves.</p>
+                <a href="metacognition.html" class="card-link">Accéder</a>
+            </div>
+        </div>
+    </div>
+    <footer>© 2026 Christine Saintobin</footer>
+</body>
+</html>

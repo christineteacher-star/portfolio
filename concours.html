@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Séquence : Le Contraste (Lauréat AFLEC) — Christine Saintobin</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+        
+        body { font-family: 'Montserrat', sans-serif; line-height: 1.6; color: #444; max-width: 1000px; margin: 0 auto; padding: 40px; background: #fdfdfd; }
+        .container { background: white; padding: 50px; border: 1px solid #eee; box-shadow: 0 2px 15px rgba(0,0,0,0.02); margin: 0 auto; }
+        
+        .top-nav { border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; }
+        .back-link { text-decoration: none; color: #b22222; font-weight: 600; font-size: 0.8em; text-transform: uppercase; }
+        
+        h1 { font-family: 'Playfair Display', serif; color: #1a1a1a; font-size: 2.5em; margin: 0 0 10px 0; font-weight: 400; }
+        .meta-info { color: #888; font-size: 0.9em; margin-bottom: 40px; border-left: 3px solid #b22222; padding-left: 15px; display: flex; gap: 25px; flex-wrap: wrap; }
+
+        .hero-section { display: grid; grid-template-columns: 200px 1fr; gap: 40px; margin-bottom: 40px; align-items: stretch; }
+        
+        .prix-badge-container { text-align: center; display: flex; flex-direction: column; justify-content: center; }
+        .prix-badge-container img { width: 100%; height: auto; border: 1px solid #eee; padding: 5px; background: white; box-sizing: border-box; }
+        .prix-legend { font-family: 'Montserrat', sans-serif; color: #b22222; font-size: 0.65em; font-weight: 400; line-height: 1.3; margin-top: 10px; display: block; }
+
+        /* Ajustement de l'espacement avant motricité fine */
+        .eval-box { background: #fff5f5; padding: 25px; border-radius: 4px; border: 1px solid #fbeaea; margin: 0; box-sizing: border-box; }
+        .eval-box h3 { margin-top: 0; color: #b22222; font-family: 'Playfair Display', serif; font-size: 1.1em; border-bottom: 1px solid #fbeaea; padding-bottom: 10px; margin-bottom: 15px; }
+        .eval-box ul { padding-left: 18px; margin: 20px 0 0 0; } /* Saut de ligne via margin-top */
+        .eval-box li { font-size: 0.82em; margin-bottom: 8px; }
+
+        .star-box { background: #f9f9f9; padding: 25px; border-radius: 4px; margin-bottom: 40px; border: 1px solid #f0f0f0; }
+        .star-box h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-top: 0; color: #1a1a1a; border-bottom: 1px solid #e0e0e0; padding-bottom: 10px; margin-bottom: 20px; }
+        .star-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; font-size: 0.9em; }
+        .star-item strong { color: #b22222; display: block; margin-bottom: 5px; font-size: 0.85em; text-transform: uppercase; }
+
+        h2.section-title { font-family: 'Playfair Display', serif; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 40px; font-size: 1.8em; color: #1a1a1a; }
+
+        .tableau-sequence { width: 100%; border-collapse: collapse; margin: 25px 0; }
+        .tableau-sequence th { background: #1a1a1a; color: white; text-align: left; padding: 12px 15px; font-size: 0.75em; text-transform: uppercase; letter-spacing: 1px; }
+        .tableau-sequence td { padding: 25px; border: 1px solid #eee; vertical-align: top; font-size: 0.9em; }
+        
+        .seance-tag { display: inline-block; padding: 3px 10px; background: #b22222; color: white; border-radius: 2px; font-size: 0.75em; font-weight: 600; text-transform: uppercase; margin-bottom: 10px; }
+        .label-activite { font-weight: 600; color: #1a1a1a; display: block; margin-bottom: 10px; font-size: 1.05em; }
+        
+        .img-wrap { margin: 20px 0; text-align: center; }
+        .img-wrap img { width: 100%; max-width: 500px; height: auto; border-radius: 2px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+
+        .supports { font-size: 0.82em; color: #666; font-style: italic; margin-top: 15px; display: block; }
+        .supports::before { content: "🛠️ Ingénierie & Outils : "; font-weight: 600; color: #b22222; }
+
+        .competences-section { background: #fdfdfd; padding: 15px; border: 1px solid #f0f0f0; margin-top: 15px; font-size: 0.85em; border-left: 3px solid #b22222; }
+        .competences-section strong { color: #b22222; font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* Section Rose - Équilibrage des colonnes */
+        .pink-footer-section { background: #fff5f5; padding: 35px; border-radius: 4px; border: 1px solid #fbeaea; margin-top: 40px; box-sizing: border-box; }
+        .pink-footer-section h3 { margin-top: 0; color: #b22222; font-family: 'Playfair Display', serif; border-bottom: 1px solid #fbeaea; padding-bottom: 10px; margin-bottom: 25px; }
+        
+        .grid-points { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .point-item h4 { margin: 0 0 10px 0; text-transform: uppercase; font-size: 0.8em; letter-spacing: 1px; color: #1a1a1a; border-bottom: 1px solid rgba(178, 34, 34, 0.1); padding-bottom: 5px; }
+        .point-item p { font-size: 0.85em; margin: 0; line-height: 1.8; text-align: justify; }
+
+        footer { margin-top: 80px; text-align: center; font-size: 0.7em; color: #bbb; text-transform: uppercase; letter-spacing: 2px; padding: 30px 0; border-top: 1px solid #eee; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="top-nav">
+            <a href="projets.html" class="back-link">← Projets</a>
+            <span style="font-size: 0.8em; color: #999; text-transform: uppercase;">Christine Saintobin</span>
+        </div>
+
+        <h1>Le Contraste : Entre Art et Science</h1>
+        <div class="meta-info">
+            <span><strong>Niveau :</strong> Grande Section (GS)</span>
+            <span><strong>Lieu :</strong> Beyrouth</span>
+            <span><strong>Distinction :</strong> Lauréate AFLEC 2019</span>
+        </div>
+
+        <div class="hero-section">
+            <div class="prix-badge-container">
+                <img src="laureate.jpeg" alt="Prix ESA Beyrouth">
+                <span class="prix-legend">Remise du 1er Prix AFLEC à l'ESA Beyrouth</span>
+            </div>
+
+            <div class="eval-box">
+                <h3>Objectifs & Compétences Clés</h3>
+                <ul>
+                    <li><strong>Motricité fine :</strong> Tenue correcte du crayon, précision du collage et du découpage de précision.</li>
+                    <li><strong>Socialisation :</strong> Apprendre à coopérer, échanger et s'entraider lors des montages collectifs.</li>
+                    <li><strong>Mathématiques :</strong> Structurer le repérage spatial via la manipulation des formes du Tangram.</li>
+                    <li><strong>Langage :</strong> Mobiliser et réutiliser un vocabulaire précis (contraste, silhouette, optique, relief).</li>
+                </ul>
+            </div>
+        </div>
+
+        <section class="star-box">
+            <h2>Analyse STAR</h2>
+            <div class="star-grid">
+                <div class="star-item"><strong>Situation</strong>Développer la structuration spatiale et la perception visuelle d'élèves de GS par une approche interdisciplinaire innovante.</div>
+                <div class="star-item"><strong>Tâche</strong>Transformer la conscience corporelle (Yoga) en une représentation graphique (silhouette), puis en une expérience d'optique scientifique.</div>
+                <div class="star-item"><strong>Action</strong>Mise en œuvre d'ateliers de motricité fine, fabrication de dispositifs optiques et assemblage collectif d'un Tangram géant en 3D.</div>
+                <div class="star-item"><strong>Résultat</strong>Distinction internationale AFLEC récompensant une maîtrise du langage d'évocation et une excellente conscience spatio-temporelle chez les élèves.</div>
+            </div>
+        </section>
+
+        <h2 class="section-title">Ingénierie de la Séquence</h2>
+        
+        <table class="tableau-sequence">
+            <thead>
+                <tr>
+                    <th style="width: 32%;">Séances</th>
+                    <th>Démarche Pédagogique</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span class="seance-tag">Séances 1 à 3</span><br>
+                        <strong>Identité & Corps</strong>
+                    </td>
+                    <td>
+                        <span class="label-activite">À la manière de Yayoi Kusama</span>
+                        <div class="content-text">Après une phase de Yoga, les élèves détournent leur silhouette projetée. Ils saturent cet espace personnel par l'application de stickers bicolores.</div>
+                        <div class="img-wrap">
+                            <img src="kusama.png" alt="Yoga et silhouettes">
+                        </div>
+                        <div class="competences-section">
+                            <strong>Motricité & Vocabulaire :</strong> Tenir son crayon correctement pour détourer avec soin. Précision du collage sans dépassement. Vocabulaire : <em>silhouette, fond, forme.</em>
+                        </div>
+                        <span class="supports">Stickers colorés, projecteur, tapis de yoga, silhouettes papier.</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="seance-tag">Séances 4 à 6</span><br>
+                        <strong>Optique & Secret</strong>
+                    </td>
+                    <td>
+                        <span class="label-activite">L'écriture magique</span>
+                        <div class="content-text">Fabrication de lunettes artisanales. Manipulation de filtres rouges et bleus pour occulter ou révéler des informations graphiques cachées.</div>
+                        <div class="img-wrap">
+                            <img src="experience.png" alt="Expérience Scientifique">
+                        </div>
+                        <div class="competences-section">
+                            <strong>Motricité & Vocabulaire :</strong> Montage et assemblage minutieux des lunettes. Vocabulaire : <em>filtre, optique, transparent, complémentaire.</em>
+                        </div>
+                        <span class="supports">Gélatines optiques, lampes torches, fiches "mystère" bicolores.</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="seance-tag">Séances 7 à 10</span><br>
+                        <strong>Relief & Géométrie</strong>
+                    </td>
+                    <td>
+                        <span class="label-activite">Synthèse : Le Tangram 3D</span>
+                        <div class="content-text">Construction collective de vingt tangrams. Le découpage précis des pièces et leur organisation bicolore permettent de générer une illusion de relief une fois les lunettes portées.</div>
+                        <div class="img-wrap">
+                            <img src="tangrams.png" alt="Tangram 3D">
+                        </div>
+                        <div class="competences-section">
+                            <strong>Motricité & Vocabulaire :</strong> Découper les formes du Tangram avec précision sur le tracé. Coopérer pour l'assemblage final. Vocabulaire : <em>triangle, carré, relief, profondeur.</em>
+                        </div>
+                        <span class="supports">Tangrams géants, adhésifs, gélatines bleues et rouges, lunettes 3D.</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="pink-footer-section">
+            <h3>Évaluation Positive & Valorisation</h3>
+            <div class="grid-points">
+                <div class="point-item">
+                    <h4>Critères de réussite</h4>
+                    <p>• <strong>Graphisme :</strong> Précision du trait, respect des contours et tenue de l'outil.<br>
+                       • <strong>Technique :</strong> Propreté exemplaire du collage et justesse du découpage des pièces géométriques du tangram.<br>
+                       • <strong>Concept :</strong> Verbalisation claire des découvertes sur la lumière. Capacité à expliquer l'interaction entre les filtres colorés et les supports bicolores.</p>
+                </div>
+                <div class="point-item">
+                    <h4>Évaluation Bienveillante</h4>
+                    <p>• <strong>Suivi positif :</strong> Valorisation systématique des progrès individuels réalisés en motricité fine tout au long du projet.<br>
+                       • <strong>Autonomie :</strong> Observation de la capacité à choisir et organiser ses stickers de manière méthodique.<br>
+                       • <strong>Réflexion :</strong> Validation des acquis et de la compréhension des phénomènes via le cahier d'expériences individuel.</p>
+                </div>
+                <div class="point-item">
+                    <h4>Différenciation</h4>
+                    <p>• <strong>Adaptation :</strong> Utilisation de gabarits rigides pour faciliter le découpage si besoin.<br>
+                       • <strong>Challenge :</strong> Création de contrastes optiques complexes pour les élèves avancés.</p>
+                </div>
+                <div class="point-item">
+                    <h4>Partage & Valorisation</h4>
+                    <p>Dans une démarche de transmission, les élèves présentent leurs travaux aux autres classes en expliquant les phénomènes optiques observés lors d'une exposition interactive.</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            © 2026 Christine Saintobin — Expertise Pédagogique 
+        </footer>
+    </div>
+
+</body>
+</html>

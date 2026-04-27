@@ -1,0 +1,189 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Séquence : Souvenir d'enfance — Christine Saintobin</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
+        
+        body { margin: 0; padding: 60px 0; font-family: 'Montserrat', sans-serif; line-height: 1.8; color: #1a1a1a; background-color: #fff; }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px; border: 1px solid #eee; }
+        
+        nav { text-align: center; margin-bottom: 50px; text-transform: uppercase; font-size: 0.8em; letter-spacing: 2px; }
+        nav a { text-decoration: none; color: #999; margin: 0 15px; transition: color 0.3s; }
+        nav a:hover { color: #b22222; }
+        
+        h1 { font-family: 'Playfair Display', serif; font-size: 2.2em; border-bottom: 2px solid #b22222; padding-bottom: 10px; margin-bottom: 30px; }
+        h2 { font-family: 'Playfair Display', serif; color: #b22222; margin-top: 40px; font-size: 1.6em; }
+        h3 { font-size: 1.1em; color: #000; margin-top: 0; }
+        
+        .badge-didactique { background: #b22222; color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.7em; font-weight: 600; text-transform: uppercase; margin-bottom: 20px; display: inline-block; }
+        
+        .info-panel { background: #f9f9f9; padding: 25px; margin: 20px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border-radius: 8px; font-size: 0.9em; }
+        .info-item strong { color: #b22222; display: block; text-transform: uppercase; font-size: 0.8em; letter-spacing: 1px; }
+
+        .methodo-box { border-left: 4px solid #b22222; background: #fff5f5; padding: 20px; margin: 25px 0; }
+        
+        .highlight-box { background: #fdf2f2; border: 1px solid #eecaca; padding: 20px; border-radius: 8px; margin: 25px 0; font-size: 0.95em; }
+        
+        .grid-tools { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 25px 0; }
+        .tool-card { background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #eee; font-size: 0.85em; }
+        .tool-card h4 { margin-top: 0; color: #b22222; text-transform: uppercase; font-size: 0.85em; letter-spacing: 1px; border-bottom: 1px solid #eee; padding-bottom: 8px; margin-bottom: 12px; }
+        .tool-card ul { padding-left: 15px; margin: 0; }
+
+        .game-box { background: #f0f4f8; border: 1px dashed #2c3e50; padding: 25px; margin: 30px 0; border-radius: 8px; }
+        .game-box h3 { color: #2c3e50; font-family: 'Playfair Display', serif; }
+
+        .exemple-production { background: #fffaf0; border: 1px dashed #d2b48c; padding: 25px; margin: 30px 0; font-style: italic; position: relative; font-size: 0.95em; }
+        .exemple-production::before { content: "Exemple de production d'élève"; position: absolute; top: -12px; left: 20px; background: #d2b48c; color: white; padding: 2px 12px; font-size: 0.7em; font-style: normal; font-weight: 600; text-transform: uppercase; }
+
+        .eval-table { width: 100%; border-collapse: collapse; margin-top: 25px; font-size: 0.85em; }
+        .eval-table th { background-color: #1a1a1a; color: white; text-align: left; padding: 12px 15px; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8em; }
+        .eval-table td { padding: 12px 15px; border: 1px solid #eee; }
+        .competence-header { font-weight: 600; color: #b22222; background: #fffafa; }
+
+        footer { text-align: center; margin-top: 60px; font-size: 0.8em; color: #999; text-transform: uppercase; letter-spacing: 1px; }
+        .highlight { font-weight: 600; color: #b22222; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html">Accueil</a>
+        <a href="philosophie.html">Philosophie</a>
+        <a href="Projets.html">Projets</a>
+        <a href="sequences.html">Séquences</a>
+    </nav>
+
+    <div class="container">
+        <div class="badge-didactique">Expertise Didactique & Littérature</div>
+        <h1>Le récit autobiographique</h1>
+        
+        <div class="info-panel">
+            <div class="info-item"><strong>Public visé</strong> Cycle 4 / Classes de 3ème</div>
+            <div class="info-item"><strong>Objectif didactique</strong> Maîtrise des codes de l'écriture de soi</div>
+            <div class="info-item"><strong>Compétences</strong> Narration, subjectivité & réflexivité</div>
+            <div class="info-item"><strong>Support</strong> Textes patrimoniaux & Médiation IA</div>
+        </div>
+
+        <div class="partie">
+            <h2>I. Objectifs de la séquence</h2>
+            <p>Cette séquence pédagogique vise à maîtriser les codes de l'écriture de soi. En s'appuyant sur l'étude de textes patrimoniaux, les élèves apprennent à structurer un récit rétrospectif cohérent, à alterner les temps du passé et à exprimer leur subjectivité à travers un lexique sensoriel et émotionnel riche.</p>
+        </div>
+
+        <div class="highlight-box">
+            <span class="highlight">Innovation Pédagogique :</span> Ce parcours intègre désormais l'usage de l'<strong>Intelligence Artificielle</strong> pour fixer l'image mentale du souvenir et un <strong>jeu de dessin dicté</strong> pour renforcer la précision du vocabulaire spatial et descriptif.
+        </div>
+
+        <h2>II. Boîte à outils : guide de production</h2>
+        <div class="grid-tools">
+            <div class="tool-card">
+                <h4>1. Choisir & Situer</h4>
+                <ul>
+                    <li>Événement marquant (anniversaire, voyage).</li>
+                    <li>Période & Lieu : "C'était au printemps...".</li>
+                    <li>Ambiance : "L'atmosphère était joyeuse...".</li>
+                </ul>
+            </div>
+            <div class="tool-card">
+                <h4>2. Grammaire du passé</h4>
+                <ul>
+                    <li><strong>Imparfait :</strong> Décor et habitudes.</li>
+                    <li><strong>Passé Composé :</strong> Actions soudaines.</li>
+                    <li><strong>Connecteurs :</strong> D'abord, puis, soudain...</li>
+                </ul>
+            </div>
+            <div class="tool-card">
+                <h4>3. Émotions & Sens</h4>
+                <ul>
+                    <li><strong>Sentiments :</strong> Joie, peur, nostalgie.</li>
+                    <li><strong>Visions & Sons :</strong> Ciel éclatant, vent.</li>
+                    <li><strong>Odeurs :</strong> Chocolat chaud, herbe coupée.</li>
+                </ul>
+            </div>
+            <div class="tool-card">
+                <h4>4. Conclusion & Impact</h4>
+                <ul>
+                    <li>Leçon apprise : "J'ai compris que..."</li>
+                    <li>Évolution : "Cet événement m'a changé..."</li>
+                    <li>Impact durable : "Même aujourd'hui...".</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="game-box">
+            <h3>Médiation : le dessin de mémoire</h3>
+            <p>Le jeu du <strong>"dessinateur aveugle"</strong> : un élève décrit oralement son souvenir à un camarade. Cette activité force l'utilisation de termes de position (au premier plan, à droite) et d'adjectifs précis avant de passer à l'étape finale de l'écriture.</p>
+        </div>
+
+        <h2>III. Atelier d'écriture & IA</h2>
+        <div class="exemple-production">
+            <p>"J'avais huit ans et c'était au début de l'été. Nous étions chez mes grands-parents. Un jour, j'ai vu un petit chaton abandonné. J'étais surpris et un peu inquiet. J'ai ressenti un grand élan de tendresse. Depuis ce jour, j'adore m'occuper des animaux..."</p>
+            <p style="font-size: 0.8em; margin-top: 10px; font-style: normal; color: #666;"><em>Note : L'élève a utilisé l'IA pour générer l'image de ce souvenir afin de guider sa description.</em></p>
+        </div>
+
+        <div class="methodo-box">
+            <h3>Critères d'évaluation (Normes DNB)</h3>
+            <table class="eval-table">
+                <thead>
+                    <tr>
+                        <th>Domaine de compétence</th>
+                        <th>Indicateurs de réussite</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="competence-header">Maîtrise de la langue</td>
+                        <td>Respect de l'orthographe et alternance Imparfait / Passé Composé.</td>
+                    </tr>
+                    <tr>
+                        <td class="competence-header">Qualité de l'expression</td>
+                        <td>Précision du vocabulaire sensoriel et émotionnel.</td>
+                    </tr>
+                    <tr>
+                        <td class="competence-header">Cohérence narrative</td>
+                        <td>Respect de la chronologie et des connecteurs logiques.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>Auto-évaluation (Élève)</h2>
+        <table class="eval-table">
+            <thead>
+                <tr>
+                    <th>Critères pour réussir mon récit</th>
+                    <th style="text-align: center; width: 80px;">Fait</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>J'ai choisi un souvenir précis et expliqué son importance.</td>
+                    <td style="text-align: center;">⬜</td>
+                </tr>
+                <tr>
+                    <td>Mon texte est découpé en paragraphes logiques.</td>
+                    <td style="text-align: center;">⬜</td>
+                </tr>
+                <tr>
+                    <td>J'ai utilisé l'imparfait pour décrire et le passé composé pour agir.</td>
+                    <td style="text-align: center;">⬜</td>
+                </tr>
+                <tr>
+                    <td>J'ai intégré des éléments sensoriels (vue, odorat, ouïe).</td>
+                    <td style="text-align: center;">⬜</td>
+                </tr>
+                <tr>
+                    <td>J'ai relu mes accords sujet-verbe et mes majuscules.</td>
+                    <td style="text-align: center;">⬜</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer>
+            © 2026 Christine Saintobin — Didactique & Innovation Littéraire
+        </footer>
+    </div>
+
+</body>
+</html>
