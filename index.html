@@ -1,9 +1,46 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Christine Saintobin — Portfolio</title>
+    
+    <!-- SYSTEME MOT DE PASSE -->
+    <script>
+        (function() {
+            const PASSWORD = "Dragon2026"; // Changez votre mot de passe ici
+            
+            if (sessionStorage.getItem('portfolio_auth') !== 'true') {
+                let authenticated = false;
+                while (!authenticated) {
+                    let input = prompt("Ce portfolio est protégé. Veuillez saisir le mot de passe :");
+                    if (input === null) {
+                        window.location.href = "https://google.com";
+                        break;
+                    }
+                    if (input === PASSWORD) {
+                        sessionStorage.setItem('portfolio_auth', 'true');
+                        authenticated = true;
+                    } else {
+                        alert("Mot de passe incorrect.");
+                    }
+                }
+            }
+        })();
+    </script>
+
+    <style>
+        /* Masque la page tant que le mot de passe n'est pas validé */
+        html { display: none; }
+    </style>
+
+    <script>
+        if (sessionStorage.getItem('portfolio_auth') === 'true') {
+            document.documentElement.style.display = 'block';
+        }
+    </script>
+    <!-- FIN SYSTEME MOT DE PASSE -->
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
 
@@ -173,9 +210,9 @@
                         "Libérez le potentiel de l’enfant et vous transformerez le monde avec lui."
                     </p>
                     <div class="cta-group">
-                        <a href="album-ce2.html" class="cta-link">Album</a>
-                        <a href="https://christineteacher-star.github.io/revision/index.html" class="cta-link">Académie</a>
-                        <a href="cv.html" class="cta-link">CV</a>
+                        <a href="album-ce2.html" class="cta-link">Album Photos CE2</a>
+                        <a href="https://christineteacher-star.github.io/revision/index.html" class="cta-link">Mon Académie</a>
+                        <a href="cv.html" class="cta-link">Mon CV</a>
                     </div>
                 </div>
             </section>
