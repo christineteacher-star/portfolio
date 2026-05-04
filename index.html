@@ -5,30 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Christine Saintobin — Portfolio</title>
     
-    <!-- SYSTEME MOT DE PASSE -->
-    <script>
-        (function() {
-            const PASSWORD = "Dragon2026"; // Changez votre mot de passe ici
-            
-            if (sessionStorage.getItem('portfolio_auth') !== 'true') {
-                let authenticated = false;
-                while (!authenticated) {
-                    let input = prompt("Ce portfolio est protégé. Veuillez saisir le mot de passe :");
-                    if (input === null) {
-                        window.location.href = "https://google.com";
-                        break;
-                    }
-                    if (input === PASSWORD) {
-                        sessionStorage.setItem('portfolio_auth', 'true');
-                        authenticated = true;
-                    } else {
-                        alert("Mot de passe incorrect.");
-                    }
-                }
-            }
-        })();
-    </script>
-
     <style>
         /* Masque la page tant que le mot de passe n'est pas validé */
         html { display: none; }
