@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecteur DELF Niveau 3 | Académie Dragon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap');
+        body { font-family: 'Quicksand', sans-serif; background: #f8fafc; overflow-x: hidden; }
+        .word { font-size: 1.3rem; margin: 0 3px; color: #94a3b8; transition: all 0.2s; display: inline-block; border-radius: 6px; padding: 0 3px; line-height: 2.2rem; }
+        .word.current { color: #3b82f6 !important; font-weight: 700; background: #dbeafe; border-bottom: 3px solid #3b82f6; }
+        .word.read { color: #10b981 !important; font-weight: 600; }
+        .word.skipped { color: #ef4444 !important; text-decoration: line-through; opacity: 0.6; font-weight: 700; }
+        
+        .sidebar { width: 85px; height: 100vh; background: white; border-right: 1px solid #e2e8f0; position: fixed; left: 0; top: 0; display: flex; flex-direction: column; align-items: center; padding: 25px 0; z-index: 100; }
+        .main-container { margin-left: 85px; padding: 1rem; }
+        
+        .themes-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; justify-content: center; }
+        .themes-row::-webkit-scrollbar { height: 4px; }
+        
+        @media (max-width: 1024px) {
+            .sidebar { width: 100%; height: 60px; flex-direction: row; position: relative; padding: 0 20px; justify-content: space-between; border-right: none; border-bottom: 1px solid #e2e8f0; }
+            .main-container { margin-left: 0; padding: 0.5rem; }
+            .themes-row { justify-content: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <a href="index.html" class="w-12 h-12 bg-red-500 rounded-2xl flex items-center justify-center text-white shadow-lg mb-8 hover:scale-110 transition-transform">
+            <i class="fas fa-dragon text-2xl"></i>
+        </a>
+        <a href="index.html" class="text-slate-400 hover:text-red-500"><i class="fas fa-home text-2xl"></i></a>
+    </nav>
+
+    <div class="main-container">
+        <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl p-5 border border-slate-200">
+            
+            <header class="text-center mb-2">
+                <h1 class="text-xl font-black text-slate-800 tracking-tight uppercase">Lecteur Académie Dragon - Niveau 3</h1>
+                <p id="status-msg" class="text-blue-600 font-bold text-[10px] h-3 uppercase"></p>
+            </header>
+
+            <div class="themes-row mb-4">
+                <button onclick="loadLevel('C1_Culture')" class="whitespace-nowrap px-3 py-1.5 bg-rose-50 text-rose-700 border border-rose-100 rounded-full font-bold text-[11px] hover:bg-rose-600 hover:text-white transition">C1 Culture</button>
+                <button onclick="loadLevel('C1_Politique')" class="whitespace-nowrap px-3 py-1.5 bg-rose-50 text-rose-700 border border-rose-100 rounded-full font-bold text-[11px] hover:bg-rose-600 hover:text-white transition">C1 Politique</button>
+                <button onclick="loadLevel('C1_Ethique')" class="whitespace-nowrap px-3 py-1.5 bg-rose-50 text-rose-700 border border-rose-100 rounded-full font-bold text-[11px] hover:bg-rose-600 hover:text-white transition">C1 Éthique</button>
+                <div class="w-[1px] bg-slate-200 mx-1"></div>
+                <button onclick="loadLevel('C2_Philosophie')" class="whitespace-nowrap px-3 py-1.5 bg-purple-50 text-purple-700 border border-purple-100 rounded-full font-bold text-[11px] hover:bg-purple-600 hover:text-white transition">C2 Philosophie</button>
+                <button onclick="loadLevel('C2_Litterature')" class="whitespace-nowrap px-3 py-1.5 bg-purple-50 text-purple-700 border border-purple-100 rounded-full font-bold text-[11px] hover:bg-purple-600 hover:text-white transition">C2 Littérature</button>
+                <button onclick="loadLevel('C2_Science')" class="whitespace-nowrap px-3 py-1.5 bg-purple-50 text-purple-700 border border-purple-100 rounded-full font-bold text-[11px] hover:bg-purple-600 hover:text-white transition">C2 Science</button>
+            </div>
+
+            <div id="text-zone" class="bg-slate-50 rounded-2xl p-6 text-justify min-h-[320px] max-h-[380px] overflow-y-auto border border-slate-100 shadow-inner"></div>
+
+            <div class="mt-4 flex flex-col items-center gap-3">
+                <div id="attempts-badge" class="bg-orange-50 text-orange-600 px-4 py-1 rounded-full text-xs font-bold border border-orange-100">
+                    Essais : <span id="count-val">0</span>/3
+                </div>
+                
+                <div class="flex gap-6 pb-2">
+                    <button id="mic-toggle" onclick="toggleSpeech()" class="w-12 h-12 bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center text-lg hover:scale-110 transition">
+                        <i class="fas fa-microphone" id="mic-icon"></i>
+                    </button>
+                    <button onclick="handleManualHelp()" class="w-12 h-12 bg-slate-800 text-white rounded-full shadow-lg flex items-center justify-center text-lg hover:scale-110 transition">
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const texts = {
+            'C1_Culture': "L’exception culturelle française est un concept qui défend la spécificité des biens culturels face à la mondialisation marchande. Elle postule que la création artistique ne saurait être assimilée à une simple marchandise soumise aux seules lois du marché. Ce mécanisme soutient activement la diversité de la production cinématographique et littéraire sur le territoire national. Cependant, à l’ère du numérique, ce modèle est confronté à la puissance hégémonique des grandes plateformes de diffusion globales. Le défi contemporain réside dans la capacité à préserver cette souveraineté tout en s'adaptant aux nouveaux modes de consommation des publics.",
+            'C1_Politique': "La démocratie représentative traverse une crise de légitimité sans précédent, marquée par une méfiance croissante envers les institutions traditionnelles. De nombreux citoyens déplorent une déconnexion entre les élites dirigeantes et les réalités du terrain, favorisant ainsi l'émergence de mouvements contestataires. La montée de l'abstention lors des scrutins électoraux témoigne d'un désenchantement profond vis-à-vis du débat politique classique. Pour remédier à cette situation, certains proposent d'instaurer des mécanismes de démocratie participative ou délibérative. L'enjeu est de réinventer le contrat social pour garantir une cohésion nationale durable face aux fractures idéologiques.",
+            'C1_Ethique': "L'éthique environnementale nous invite à repenser radicalement notre rapport au monde vivant et à la nature sauvage. Traditionnellement anthropocentrée, notre vision du progrès a souvent négligé les conséquences écologiques à long terme de l'exploitation des ressources. Il est désormais urgent d'adopter une approche biocentrée, où chaque espèce possède une valeur intrinsèque indépendante de son utilité pour l'homme. Ce changement de paradigme exige une transformation de nos cadres juridiques et de nos responsabilités morales envers les générations futures. La justice climatique devient alors le socle d'une nouvelle citoyenneté mondiale consciente des limites physiques de notre planète.",
+            'C2_Philosophie': "Le concept de phénoménologie, tel qu'élaboré par Husserl, propose un retour à l'étude des structures de la conscience et des phénomènes tels qu'ils se présentent à nous. Il s'agit de suspendre tout jugement préalable sur l'existence du monde extérieur pour se concentrer sur l'intentionnalité du sujet percevant. Cette approche bouleverse l'épistémologie classique en plaçant l'expérience vécue au cœur de la connaissance. En explorant la subjectivité, la philosophie cherche à saisir l'essence même de notre présence au monde. Cette quête de sens demeure fondamentale pour comprendre la complexité de l'existence humaine et la genèse de nos représentations mentales.",
+            'C2_Litterature': "La structure narrative du nouveau roman a déconstruit les codes de la fiction balzacienne en évacuant l'intrigue linéaire et la psychologie du personnage. Les auteurs cherchent à capter la fragmentation du réel et l'opacité des objets par une écriture rigoureuse et souvent labyrinthique. Le lecteur devient un participant actif, chargé de reconstituer un sens qui n'est jamais donné d'emblée par le texte. Cette esthétique de la rupture interroge notre rapport au langage et sa capacité à représenter fidèlement la vérité. Le style devient ainsi le véritable sujet de l'œuvre, révélant la dimension profondément expérimentale de la création littéraire moderne.",
+            'C2_Science': "Les avancées spectaculaires de la physique quantique ébranlent nos certitudes déterministes sur la nature profonde de la réalité matérielle. À l'échelle subatomique, les particules semblent obéir à des lois de probabilité qui défient notre intuition macroscopique habituelle. Le principe d'incertitude suggère que l'acte d'observation lui-même influence les propriétés du système étudié. Cette intrication entre le sujet et l'objet remet en question l'objectivité absolue de la démarche scientifique traditionnelle. La science n'apparaît plus comme une simple description de la réalité, mais comme une construction complexe d'interprétations issues de nos interactions avec l'univers."
+        };
+
+        const verbsENT = ["défendent", "postulent", "soutiennent", "déplorent", "proposent", "témoignent", "négligent", "deviennent", "cherchent", "révèlent", "semblent", "obéissent"];
+
+        let words = [];
+        let currentIdx = 0;
+        let attempts = 0;
+        let isActive = false;
+        let recognition;
+        const synth = window.speechSynthesis;
+
+        if (window.SpeechRecognition || window.webkitSpeechRecognition) {
+            const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new Speech();
+            recognition.lang = 'fr-FR';
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.onresult = (e) => {
+                let heard = Array.from(e.results).slice(e.resultIndex).map(res => res[0].transcript).join('').toLowerCase();
+                evaluate(heard);
+            };
+            recognition.onend = () => { if(isActive) recognition.start(); };
+        }
+
+        function loadLevel(lvl) {
+            words = texts[lvl].split(/\s+/);
+            currentIdx = 0; attempts = 0;
+            const zone = document.getElementById('text-zone');
+            zone.innerHTML = '';
+            words.forEach((w, i) => {
+                const s = document.createElement('span');
+                s.id = 'wd-' + i;
+                s.className = 'word';
+                s.innerText = w;
+                zone.appendChild(s);
+            });
+            updateFocus();
+        }
+
+        function updateFocus() {
+            document.querySelectorAll('.word').forEach(s => s.classList.remove('current'));
+            const c = document.getElementById('wd-' + currentIdx);
+            const status = document.getElementById('status-msg');
+            if (c) {
+                c.classList.add('current');
+                c.scrollIntoView({behavior: "smooth", block: "center"});
+                let clean = words[currentIdx].toLowerCase().replace(/[.,!?;:]/g, "");
+                if (verbsENT.includes(clean)) status.innerText = "💡 Verbe pluriel : le '-ent' est muet !";
+                else if (clean.endsWith("ent") || clean.endsWith("ant")) status.innerText = "🔔 Sonore : [AN]";
+                else status.innerText = "";
+            }
+            document.getElementById('count-val').innerText = attempts;
+        }
+
+        function evaluate(said) {
+            if (currentIdx >= words.length) return;
+            let target = words[currentIdx].toLowerCase().replace(/[.,!?;:]/g, "");
+            let heardArray = said.toLowerCase().split(/\s+/);
+            let lastWord = heardArray[heardArray.length - 1];
+            if (verbsENT.includes(target) && (said.includes(" en") || said.includes(" an"))) return;
+            let isMatch = false;
+            if (verbsENT.includes(target)) { if (lastWord.startsWith(target.slice(0, -3))) isMatch = true; }
+            else { if (said.includes(target)) isMatch = true; }
+            if (isMatch) { document.getElementById('wd-' + currentIdx).classList.add('read'); moveToNext(); }
+        }
+
+        function handleManualHelp() {
+            if (currentIdx >= words.length) return;
+            const utterance = new SpeechSynthesisUtterance(words[currentIdx]);
+            utterance.lang = 'fr-FR';
+            synth.speak(utterance);
+            attempts++;
+            if (attempts >= 3) { document.getElementById('wd-' + currentIdx).classList.add('skipped'); setTimeout(moveToNext, 800); }
+            else { updateFocus(); }
+        }
+
+        function moveToNext() { attempts = 0; currentIdx++; updateFocus(); }
+
+        function toggleSpeech() {
+            if (!isActive) {
+                recognition.start(); isActive = true;
+                document.getElementById('mic-toggle').classList.replace('bg-blue-600', 'bg-red-500');
+            } else {
+                recognition.stop(); isActive = false;
+                document.getElementById('mic-toggle').classList.replace('bg-red-500', 'bg-blue-600');
+            }
+        }
+        loadLevel('C1_Culture');
+    </script>
+</body>
+</html>
