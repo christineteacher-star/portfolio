@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>L'Apprenti Argumentateur - Tactile</title>
+    <style>
+        :root { --primary: #0277bd; --secondary: #e1f5fe; --success: #388e3c; --bg: #f0f4f8; --selected: #ffc107; }
+        body { font-family: 'Arial', sans-serif; background-color: var(--bg); padding: 15px; user-select: none; -webkit-user-select: none; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        h1 { color: #1565c0; text-align: center; font-size: 1.5rem; }
+        .level-info { text-align: center; font-weight: bold; color: var(--primary); margin-bottom: 15px; }
+        
+        #puzzle-area { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        
+        .draggable { 
+            background: var(--secondary); border: 2px solid var(--primary); padding: 12px;
+            border-radius: 10px; cursor: pointer; font-size: 1rem; transition: 0.3s;
+            touch-action: manipulation; /* Optimise le tap sur mobile */
+        }
+        
+        /* Style quand une phrase est sélectionnée */
+        .draggable.active { 
+            background: var(--selected); 
+            border-color: #ffa000;
+            transform: scale(1.02);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .draggable.correct { background: #c8e6c9; border-color: var(--success); }
+        
+        .buttons { display: flex; flex-direction: column; gap: 10px; }
+        button { padding: 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1.1em; color: white; }
+        .btn-check { background: var(--primary); }
+        .btn-reset { background: #78909c; }
+        .btn-next { background: var(--success); display: none; }
+        #message { margin-top: 15px; text-align: center; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>L'Apprenti Argumentateur ✍️</h1>
+    <div id="level-title" class="level-info"></div>
+    <p style="font-size: 0.9em; text-align: center; color: #666;">Appuyez sur deux phrases pour les échanger.</p>
+
+    <div id="puzzle-area"></div>
+
+    <div class="buttons">
+        <button class="btn-check" onclick="checkOrder()">Vérifier l'ordre</button>
+        <button class="btn-reset" onclick="initLevel()">Réinitialiser 🔄</button>
+        <button id="next-btn" class="btn-next" onclick="nextLevel()">Niveau Suivant ➔</button>
+    </div>
+    <div id="message"></div>
+</div>
+
+<script>
+    const levels = [
+        {
+            title: "Phileas Fogg",
+            data: [
+                { id: "1", text: "Phileas Fogg est un homme qui adore la routine et l'ordre." },
+                { id: "2", text: "Il fait notamment les mêmes activités chaque jour à la même minute." },
+                { id: "3", text: "Il pense que la vie est plus simple quand on calcule tout avec précision." },
+                { id: "4", text: "Par exemple, il va au club chaque jour exactement à onze heures et demie." },
+                { id: "5", text: "Pourtant, cette vie très calme va bientôt changer à cause d'un pari fou." },
+                { id: "6", text: "C'est pourquoi son nouveau valet va être très surpris par ce voyage." }
+            ]
+        },
+        {
+            title: "Les Fast-foods",
+            data: [
+                { id: "1", text: "De nos jours, beaucoup de jeunes mangent souvent dans les fast-foods." },
+                { id: "2", text: "Ils y vont notamment parce que c'est un endroit pratique pour les amis." },
+                { id: "3", text: "Dans ces restaurants, le service est très rapide et les prix sont bas." },
+                { id: "4", text: "Ainsi, on peut manger un menu complet pour moins de dix euros." },
+                { id: "5", text: "Cependant, cette nourriture est souvent trop grasse pour la santé." },
+                { id: "6", text: "C'est pourquoi il faut aussi essayer de cuisiner des produits frais." }
+            ]
+        }
+    ];
+
+    let currentLevel = 0;
+    let selectedElement = null;
+
+    function initLevel() {
+        const area = document.getElementById('puzzle-area');
+        const levelData = levels[currentLevel];
+        document.getElementById('level-title').innerHTML = `Niveau ${currentLevel + 1} : ${levelData.title}`;
+        area.innerHTML = '';
+        document.getElementById('next-btn').style.display = 'none';
+        document.getElementById('message').innerHTML = '';
+        selectedElement = null;
+
+        let shuffled = [...levelData.data].sort(() => Math.random() - 0.5);
+
+        shuffled.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'draggable';
+            div.innerHTML = item.text;
+            div.dataset.id = item.id;
+            
+            // Logique de clic simple pour mobile
+            div.onclick = function() {
+                handleSelect(this);
+            };
+            
+            area.appendChild(div);
+        });
+    }
+
+    function handleSelect(el) {
+        if (!selectedElement) {
+            // Premier clic : on sélectionne
+            selectedElement = el;
+            el.classList.add('active');
+        } else {
+            // Deuxième clic : on échange
+            if (selectedElement !== el) {
+                const tempContent = el.innerHTML;
+                const tempId = el.dataset.id;
+                
+                el.innerHTML = selectedElement.innerHTML;
+                el.dataset.id = selectedElement.dataset.id;
+                
+                selectedElement.innerHTML = tempContent;
+                selectedElement.dataset.id = tempId;
+                
+                // On retire les styles de validation s'ils existent
+                el.classList.remove('correct');
+                selectedElement.classList.remove('correct');
+            }
+            
+            selectedElement.classList.remove('active');
+            selectedElement = null;
+        }
+    }
+
+    function checkOrder() {
+        const items = document.querySelectorAll('.draggable');
+        const correctData = levels[currentLevel].data;
+        let correctCount = 0;
+
+        items.forEach((item, i) => {
+            if (item.dataset.id === correctData[i].id) {
+                item.classList.add('correct');
+                correctCount++;
+            } else {
+                item.classList.remove('correct');
+            }
+        });
+
+        const msg = document.getElementById('message');
+        if (correctCount === correctData.length) {
+            msg.innerHTML = "🎉 Bravo ! C'est la bonne logique.";
+            msg.style.color = "var(--success)";
+            document.getElementById('next-btn').style.display = 'block';
+        } else {
+            msg.innerHTML = `⚠️ ${correctCount} / ${correctData.length} bien placés.`;
+            msg.style.color = "#d32f2f";
+        }
+    }
+
+    function nextLevel() {
+        currentLevel++;
+        if (currentLevel < levels.length) initLevel();
+        else {
+            document.querySelector('.container').innerHTML = "<h1>🎓 Bravo !</h1><p style='text-align:center'>Vous avez terminé tous les niveaux.</p><button class='btn-check' style='width:100%' onclick='location.reload()'>Rejouer</button>";
+        }
+    }
+
+    initLevel();
+</script>
+</body>
+</html>
