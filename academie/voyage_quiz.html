@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Académie | Quiz Voyage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap');
+        body { font-family: 'Quicksand', sans-serif; background-color: #ebf2f7; margin: 0; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .game-card { width: 100%; max-width: 480px; background: white; height: 95vh; display: flex; flex-direction: column; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; }
+        .header-nav-btn { cursor: pointer; transition: all 0.2s; padding: 4px 8px; border-radius: 8px; }
+        .header-nav-btn:hover { background-color: #f0f9ff; }
+        .img-box { width: 100%; height: 25vh; background: #f8fafc; display: flex; align-items: center; justify-content: center; overflow: hidden; border-bottom: 1px solid #f1f5f9; }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; }
+        .quiz-body { padding: 20px; flex: 1; display: flex; flex-direction: column; text-align: center; }
+        .question-text { font-size: 1.15rem; font-weight: 800; color: #1e293b; margin: 10px 0; min-height: 2.8rem; line-height: 1.3; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+        .opt-btn { background: #fdfdfd; border: 2px solid #e2e8f0; padding: 14px 8px; border-radius: 16px; font-weight: 700; color: #475569; cursor: pointer; transition: all 0.2s; min-height: 60px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-8px); } 60% { transform: translateX(8px); } }
+        .animate-error { animation: shake 0.4s ease-in-out; border-color: #ef4444 !important; background: #fef2f2 !important; color: #b91c1c !important; }
+        @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
+        .animate-correct { animation: pop 0.4s ease-in-out; border-color: #22c55e !important; background: #f0fdf4 !important; color: #15803d !important; }
+        .feedback-box { display: none; margin-top: 15px; padding: 12px; border-radius: 15px; font-size: 0.85rem; line-height: 1.4; font-weight: 600; text-align: left; }
+        .is-correct { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+        .is-wrong { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+        .btn-next { background: #0ea5e9; color: white; width: 100%; padding: 16px; border-radius: 18px; font-weight: 800; text-transform: uppercase; margin-top: auto; box-shadow: 0 4px 0 #0284c7; display: none; cursor: pointer; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="game-card">
+        <header class="p-4 flex justify-between items-center border-b border-slate-100">
+            <div onclick="window.location.href='index.html'" class="header-nav-btn flex items-center gap-2 text-sky-600 font-black text-sm uppercase">
+                <i class="fas fa-compass"></i> Mon Académie
+            </div>
+            <span id="lvl-display" class="bg-sky-50 text-sky-600 text-[10px] font-bold px-3 py-1 rounded-full border border-sky-100">NIVEAU 1</span>
+        </header>
+
+        <div class="h-1.5 bg-slate-100"><div id="progress-bar" class="h-full bg-sky-500 w-0 transition-all duration-500"></div></div>
+        <div class="img-box"><img id="q-img" src="" alt="Image"></div>
+        <div class="quiz-body" id="quiz-ui">
+            <div id="q-counter" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Question 1 / 15</div>
+            <h2 id="q-text" class="question-text"></h2>
+            <div id="grid" class="options-grid"></div>
+            <div id="feedback" class="feedback-box"></div>
+            <div id="next-btn" onclick="goToNext()" class="btn-next">Continuer <i class="fas fa-arrow-right ml-2"></i></div>
+        </div>
+    </div>
+
+<script>
+    const dict = {
+        "Britannique": "Relatif à la Grande-Bretagne. Phileas Fogg est un gentleman anglais.",
+        "Français": "Relatif à la France. C'est la nationalité du valet Passepartout.",
+        "Américain": "Relatif au continent ou aux habitants des États-Unis.",
+        "Indien": "Habitant de l'Inde, pays d'Asie où Fogg sauve la princesse Aouda.",
+        "Italien": "Habitant de l'Italie, pays d'Europe en forme de botte.",
+        "Espagnol": "Habitant de l'Espagne, pays voisin de la France.",
+        "Pénélope": "L'épouse fidèle d'Ulysse qui l'attend à Ithaque durant 20 ans.",
+        "Athéna": "Déesse de la sagesse qui protège et guide Ulysse dans ses épreuves.",
+        "Circé": "Magicienne qui transforme les marins en animaux sur son île.",
+        "Calypso": "Nymphe qui retient Ulysse sur l'île d'Ogygie pendant 7 ans.",
+        "Passepartout": "Le valet de chambre dévoué de Phileas Fogg.",
+        "Fix": "Inspecteur de police qui poursuit Fogg en le prenant pour un voleur de banque.",
+        "Aouda": "Princesse indienne sauvée par Fogg et qui l'accompagne à Londres.",
+        "Homère": "Poète grec antique à qui on attribue l'écriture de l'Odyssée.",
+        "Jules Verne": "Écrivain français, auteur du roman 'Le Tour du monde en 80 jours'.",
+        "Nausicaa": "Princesse qui recueille Ulysse après son naufrage chez les Phéaciens.",
+        "Télémaque": "Le fils d'Ulysse et de Pénélope, parti chercher son père.",
+        "Zeus": "Le roi des dieux dans la mythologie grecque, maître de la foudre.",
+        "Poséidon": "Dieu de la mer qui poursuit Ulysse de sa colère.",
+        "Hélios": "Le dieu du Soleil. Les marins d'Ulysse ne devaient pas manger ses bœufs.",
+        "Hadès": "Dieu des enfers et du monde souterrain, le royaume des morts.",
+        "Éole": "Le maître des vents qui aide Ulysse avec une outre contenant les vents.",
+        "Ithaque": "L'île grecque dont Ulysse est le roi légitime.",
+        "Gibraltar": "Détroit qui sépare l'Europe de l'Afrique au sud de l'Espagne.",
+        "Suez": "Canal artificiel en Égypte reliant la Méditerranée à la mer Rouge.",
+        "Panama": "Canal d'Amérique centrale reliant l'Atlantique au Pacifique.",
+        "Manche": "Mer située entre la France et l'Angleterre.",
+        "Maghreb": "Région d'Afrique du Nord comprenant le Maroc, l'Algérie et la Tunisie.",
+        "Sahel": "Zone de transition entre le désert du Sahara et la savane africaine.",
+        "Europe": "Continent situé à l'ouest de l'Asie, où se trouve la France.",
+        "Asie": "Le plus grand continent du monde, traversé par Phileas Fogg.",
+        "L'Inde": "Vaste pays d'Asie du Sud, étape majeure du voyage de Fogg.",
+        "Bombay": "Grande ville d'Inde (aujourd'hui Mumbai) où Fogg arrive en paquebot.",
+        "Londres": "Capitale du Royaume-Uni, point de départ du défi de Fogg.",
+        "Paris": "Capitale de la France, première ville traversée par Fogg et son valet.",
+        "Sicile": "Grande île italienne au centre de la mer Méditerranée.",
+        "Crète": "Île grecque célèbre pour le mythe du Minotaure.",
+        "Corse": "Île française située au sud-est de la France continentale.",
+        "Composter": "Valider son billet de train dans une machine avant le départ.",
+        "Payer": "Donner de l'argent en échange d'un objet ou d'un service.",
+        "Plier": "Rabattre une partie de quelque chose (comme une carte de voyage).",
+        "Perdre": "Ne plus avoir en sa possession un objet (comme son billet).",
+        "Odyssée": "Un voyage très long, difficile et rempli d'aventures.",
+        "Iliade": "Poème antique racontant la célèbre guerre de Troie.",
+        "Pari": "Engagement d'argent sur le résultat d'un défi (comme le tour du monde).",
+        "Exil": "Séjour forcé loin de sa patrie pour des raisons politiques ou punitives.",
+        "Cyclope": "Géant de la mythologie avec un seul œil au milieu du front.",
+        "Polyphème": "Nom du Cyclope aveuglé par Ulysse dans sa grotte.",
+        "Sirènes": "Créatures marines au chant envoûtant qui perd les marins.",
+        "Dragon": "Animal imaginaire ailé, symbole de force, crachant souvent du feu.",
+        "Géant": "Personnage d'une taille et d'une force immenses.",
+        "80 jours": "La durée record du pari fou réalisé par Phileas Fogg.",
+        "20 ans": "Le temps total (10 ans de guerre + 10 ans de voyage) passé par Ulysse loin de chez lui.",
+        "10 ans": "Durée de la guerre de Troie ou du retour d'Ulysse selon les étapes.",
+        "1 an": "Période de temps de 365 jours.",
+        "30 jours": "Durée classique d'un mois de voyage.",
+        "Passeport": "Livret officiel indispensable pour franchir les frontières étrangères.",
+        "Visa": "Autorisation spéciale pour entrer dans certains pays.",
+        "Ticket": "Billet prouvant un achat ou un droit d'accès (métro, bus).",
+        "Billet": "Titre de transport permettant de voyager (train, avion).",
+        "Journal": "Publication quotidienne où Fogg lit qu'un tour du monde est possible.",
+        "Flâner": "Se promener sans but, tranquillement, pour découvrir un lieu.",
+        "Courir": "Se déplacer très vite à pied, comme Passepartout pour ne pas rater le train.",
+        "Marcher": "Se déplacer à pied à une allure normale.",
+        "Naviguer": "Voyager sur l'eau à bord d'un navire.",
+        "Voguer": "Se déplacer sur l'eau, porté par les éléments.",
+        "Accoster": "Action d'un navire qui vient toucher le quai du port.",
+        "Décoller": "Action d'un avion qui s'élève dans les airs.",
+        "Couler": "Sombrer vers le fond de l'eau, comme un navire en détresse.",
+        "Paquebot": "Grand navire luxueux transportant des passagers sur de longues distances.",
+        "Caravelle": "Petit navire à voiles utilisé lors des grandes découvertes.",
+        "Eldorado": "Pays imaginaire rempli d'or que recherchaient les explorateurs.",
+        "Escale": "Arrêt temporaire dans un port ou aéroport pendant un long trajet.",
+        "Itinéraire": "Description précise du chemin à suivre pour un voyage.",
+        "Boussole": "Instrument indiquant le Nord magnétique pour s'orienter.",
+        "Transatlantique": "Qui permet de traverser l'Océan Atlantique.",
+        "Charybde": "Monstre marin créant un tourbillon qui aspire les navires.",
+        "Scylla": "Monstre à six têtes dévorant les marins au milieu des rochers.",
+        "L'éléphant": "Animal que Fogg achète pour traverser une partie de l'Inde.",
+        "Reform Club": "Le club londonien très chic où Phileas Fogg passe ses journées.",
+        "Carrosse": "Véhicule à chevaux luxueux utilisé autrefois.",
+        "Hugo": "Victor Hugo, célèbre écrivain français (Les Misérables).",
+        "Voltaire": "Philosophe français du 18ème siècle.",
+        "Livre": "Ouvrage écrit ou monnaie utilisée par Phileas Fogg."
+    };
+
+    const levels = [
+        [ // NIVEAU 1
+            {q:"Nationalité de Phileas Fogg ?", a:"Britannique", c:["Britannique", "Français", "Indien", "Américain"], i:"https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=500"},
+            {q:"Épouse fidèle d'Ulysse ?", a:"Pénélope", c:["Athéna", "Calypso", "Circé", "Pénélope"], i:"https://images.unsplash.com/photo-1491849593786-7d903069875c?w=500"},
+            {q:"Détroit entre l'Espagne et le Maroc ?", a:"Gibraltar", c:["Suez", "Gibraltar", "Panama", "Manche"], i:"https://images.unsplash.com/photo-1539701938214-0d9736e1c16b?w=500"},
+            {q:"Île natale d'Ulysse ?", a:"Ithaque", c:["Ithaque", "Sicile", "Crète", "Corse"], i:"https://images.unsplash.com/photo-1533105079780-92b9be482077?w=500"},
+            {q:"Action obligatoire avec le billet ?", a:"Composter", c:["Payer", "Composter", "Plier", "Perdre"], i:"https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=500"},
+            {q:"Récit du voyage d'Ulysse ?", a:"Odyssée", c:["Odyssée", "Iliade", "Pari", "Exil"], i:"https://images.unsplash.com/photo-1491849593786-7d903069875c?w=500"},
+            {q:"Monstre à un seul œil ?", a:"Cyclope", c:["Cyclope", "Sirènes", "Dragon", "Géant"], i:"https://images.unsplash.com/photo-1533105079780-92b9be482077?w=500"},
+            {q:"Dieu de la mer ?", a:"Poséidon", c:["Zeus", "Hélios", "Poséidon", "Hadès"], i:"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500"},
+            {q:"Le pari de Fogg dure...", a:"80 jours", c:["10 ans", "80 jours", "1 an", "30 jours"], i:"https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=500"},
+            {q:"Document pour les frontières ?", a:"Passeport", c:["Passeport", "Billet", "Journal", "Visa"], i:"https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=500"},
+            {q:"Canal en Égypte ?", a:"Suez", c:["Suez", "Panama", "Gibraltar", "Manche"], i:"https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=500"},
+            {q:"Arriver au port ?", a:"Accoster", c:["Accoster", "Voguer", "Décoller", "Couler"], i:"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500"},
+            {q:"Auteur de l'Odyssée ?", a:"Homère", c:["Homère", "Jules Verne", "Hugo", "Voltaire"], i:"https://images.unsplash.com/photo-1491849593786-7d903069875c?w=500"},
+            {q:"Maroc et Algérie font partie du...", a:"Maghreb", c:["Maghreb", "Sahel", "Europe", "Asie"], i:"https://images.unsplash.com/photo-1539701938214-0d9736e1c16b?w=500"},
+            {q:"Se promener sans but ?", a:"Flâner", c:["Courir", "Flâner", "Marcher", "Naviguer"], i:"https://images.unsplash.com/photo-1539701938214-0d9736e1c16b?w=500"}
+        ],
+        [ // NIVEAU 2
+            {q:"Nationalité de Passepartout ?", a:"Français", c:["Britannique", "Français", "Italien", "Espagnol"], i:"https://images.unsplash.com/photo-1491849593786-7d903069875c?w=500"},
+            {q:"Déesse qui protège Ulysse ?", a:"Athéna", c:["Athéna", "Circé", "Calypso", "Pénélope"], i:"https://images.unsplash.com/photo-1533105079780-92b9be482077?w=500"},
+            {q:"Pays riche et imaginaire ?", a:"Eldorado", c:["Eldorado", "L'Inde", "Sicile", "Londres"], i:"https://images.unsplash.com/photo-1534067783941-51c9c23ecefd?w=500"},
+            {q:"Voyager sur l'eau ?", a:"Voguer", c:["Décoller", "Couler", "Voguer", "Marcher"], i:"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500"},
+            {q:"Magicienne de l'Odyssée ?", a:"Circé", c:["Circé", "Athéna", "Pénélope", "Calypso"], i:"https://images.unsplash.com/photo-1533105079780-92b9be482077?w=500"},
+            {q:"Fogg traverse quel pays ?", a:"L'Inde", c:["L'Inde", "Sicile", "Corse", "Crète"], i:"https://images.unsplash.com/photo-1524492707947-2f85a512b7fb?w=500"},
+            {q:"Mer entre France et Angleterre ?", a:"Manche", c:["Manche", "Suez", "Gibraltar", "Panama"], i:"https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=500"},
+            {q:"Nymphe qui retient Ulysse ?", a:"Calypso", c:["Calypso", "Circé", "Pénélope", "Athéna"], i:"https://images.unsplash.com/photo-1533105079780-92b9be482077?w=500"},
+            {q:"Autorisation d'entrée ?", a:"Visa", c:["Visa", "Billet", "Passeport", "Ticket"], i:"https://images.unsplash.com/photo-1539701938214-0d9736e1c16b?w=500"},
+            {q:"Grand navire à vapeur ?", a:"Paquebot", c:["Paquebot", "Caravelle", "Train", "Carrosse"], i:"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500"},
+            {q:"Créatures au chant dangereux ?", a:"Sirènes", c:["Sirènes", "Cyclope", "Dragon", "Géant"], i:"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500"},
+            {q:"Le policier qui suit Fogg ?", a:"Fix", c:["Passepartout", "Ulysse", "Fix", "Aouda"], i:"https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=500"},
+            {q:"Dieu du soleil ?", a:"Hélios", c:["Hélios", "Zeus", "Poséidon", "Hadès"], i:"https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=500"},
+            {q:"Ulysse rentre au bout de...", a:"20 ans", c:["10 ans", "80 jours", "1 an", "20 ans"], i:"https://images.unsplash.com/photo-1533105079780-92b9be482077?w=500"},
+            {q:"Auteur de Fogg ?", a:"Jules Verne", c:["Jules Verne", "Homère", "Hugo", "Voltaire"], i:"https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=500"}
+        ],
+        [ // NIVEAU 3
+            {q:"Le fils d'Ulysse ?", a:"Télémaque", c:["Télémaque", "Polyphème", "Fix", "Hélios"], i:"https://images.unsplash.com/photo-1491849593786-7d903069875c?w=500"},
+            {q:"Animal utilisé par Fogg ?", a:"L'éléphant", c:["L'éléphant", "Paquebot", "Carrosse", "Train"], i:"https://images.unsplash.com/photo-1524492707947-2f85a512b7fb?w=500"},
+            {q:"Princesse aidée par Fogg ?", a:"Aouda", c:["Aouda", "Pénélope", "Nausicaa", "Calypso"], i:"https://images.unsplash.com/photo-1524492707947-2f85a512b7fb?w=500"},
+            {q:"Le Cyclope s'appelle ?", a:"Polyphème", c:["Polyphème", "Charybde", "Scylla", "Hadès"], i:"https://images.unsplash.com/photo-1533105079780-92b9be482077?w=500"},
+            {q:"Arrêt durant un voyage ?", a:"Escale", c:["Itinéraire", "Escale", "Exil", "Visa"], i:"https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=500"},
+            {q:"Le maître des vents ?", a:"Éole", c:["Zeus", "Poséidon", "Éole", "Hélios"], i:"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500"},
+            {q:"Le club de Phileas Fogg ?", a:"Reform Club", c:["Reform Club", "Odyssée", "Journal", "Livre"], i:"https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=500"},
+            {q:"Princesse qui aide Ulysse ?", a:"Nausicaa", c:["Nausicaa", "Circé", "Pénélope", "Aouda"], i:"https://images.unsplash.com/photo-1533105079780-92b9be482077?w=500"},
+            {q:"Monstre qui tourbillonne ?", a:"Charybde", c:["Scylla", "Charybde", "Polyphème", "Sirènes"], i:"https://images.mbox.com/photo-1507525428034-b723cf961d3e?w=500"},
+            {q:"Ville escale en Inde ?", a:"Bombay", i:"https://images.unsplash.com/photo-1524492707947-2f85a512b7fb?w=500", c:["Bombay", "Ithaque", "Londres", "Paris"]},
+            {q:"Chemin détaillé à suivre ?", a:"Itinéraire", c:["Itinéraire", "Boussole", "Eldorado", "Escale"], i:"https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=500"},
+            {q:"Indiquer le Nord ?", a:"Boussole", c:["Boussole", "Visa", "Billet", "Passeport"], i:"https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=500"},
+            {q:"Ulysse descend chez...", a:"Hadès", c:["Hadès", "Zeus", "Poséidon", "Hélios"], i:"https://images.unsplash.com/photo-1491849593786-7d903069875c?w=500"},
+            {q:"Traverser l'Atlantique ?", a:"Transatlantique", c:["Transatlantique", "Accoster", "Voguer", "Escale"], i:"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500"},
+            {q:"Ancien navire à voiles ?", a:"Caravelle", c:["Paquebot", "Caravelle", "Avion", "Train"], i:"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500"}
+        ]
+    ];
+
+    let currentLvl = 0; let currentQ = 0; let score = 0;
+
+    window.onload = function() { loadQuestion(); };
+
+    function loadQuestion() {
+        const data = levels[currentLvl][currentQ];
+        document.getElementById('lvl-display').innerText = `NIVEAU ${currentLvl + 1}`;
+        document.getElementById('q-img').src = data.i;
+        document.getElementById('q-text').innerText = data.q;
+        document.getElementById('q-counter').innerText = `Question ${currentQ + 1} / 15`;
+        document.getElementById('progress-bar').style.width = ((currentQ / 15) * 100) + "%";
+        
+        const grid = document.getElementById('grid');
+        grid.innerHTML = "";
+        data.c.forEach(choice => {
+            const btn = document.createElement('div');
+            btn.className = "opt-btn";
+            btn.innerText = choice;
+            btn.onclick = () => verify(btn, choice, data.a);
+            grid.appendChild(btn);
+        });
+        document.getElementById('feedback').style.display = 'none';
+        document.getElementById('next-btn').style.display = 'none';
+    }
+
+    function verify(el, choice, correct) {
+        const fb = document.getElementById('feedback');
+        document.querySelectorAll('.opt-btn').forEach(b => b.onclick = null);
+        fb.style.display = 'block';
+
+        if (choice === correct) {
+            el.classList.add('animate-correct');
+            fb.className = "feedback-box is-correct";
+            fb.innerHTML = `✅ CORRECT ! <br> <b>${choice}</b> : ${dict[choice]}`;
+            score++;
+        } else {
+            el.classList.add('animate-error');
+            fb.className = "feedback-box is-wrong";
+            fb.innerHTML = `❌ INCORRECT ! <br> Tu as choisi <b>${choice}</b> : ${dict[choice]}`;
+            document.querySelectorAll('.opt-btn').forEach(b => { if(b.innerText === correct) b.style.borderColor = "#22c55e"; });
+        }
+        document.getElementById('next-btn').style.display = 'block';
+    }
+
+    function goToNext() {
+        currentQ++;
+        if (currentQ < 15) {
+            loadQuestion();
+        } else {
+            finishPalier();
+        }
+    }
+
+    function finishPalier() {
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        
+        // 1. Demander le pseudo (exactement comme dans Monte-Cristo)
+        const pseudo = prompt("Bravo ! Ton nom pour le classement :") || "Anonyme";
+        
+        // 2. Envoyer le score avec la fonction manquante
+        envoyerResultat(pseudo, score);
+
+        const hasNext = currentLvl < levels.length - 1;
+        document.getElementById('quiz-ui').innerHTML = `
+            <div class="py-10">
+                <div class="text-6xl mb-4">🏆</div>
+                <h2 class="text-2xl font-black text-slate-700 uppercase">Niveau ${currentLvl + 1} Terminé !</h2>
+                <p class="text-lg font-bold text-sky-600 mt-2">Score : ${score} / 15</p>
+                <p class="text-[12px] text-slate-500 mt-2 italic">Résultat envoyé pour ${pseudo}</p>
+                <button onclick="${hasNext ? 'nextLevel()' : 'window.location.href=\'index.html\''}" class="mt-8 bg-sky-500 text-white px-10 py-4 rounded-2xl font-black shadow-lg uppercase tracking-wide w-full">
+                    ${hasNext ? 'Passer au Niveau ' + (currentLvl + 2) : 'Voir le classement général'}
+                </button>
+            </div>`;
+    }
+
+    function nextLevel() {
+        currentLvl++; currentQ = 0; score = 0;
+        document.getElementById('quiz-ui').innerHTML = `
+            <div id="q-counter" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Question 1 / 15</div>
+            <h2 id="q-text" class="question-text"></h2>
+            <div id="grid" class="options-grid"></div>
+            <div id="feedback" class="feedback-box"></div>
+            <div id="next-btn" onclick="goToNext()" class="btn-next">Continuer <i class="fas fa-arrow-right ml-2"></i></div>`;
+        loadQuestion();
+    }
+
+    // --- CETTE FONCTION ÉTAIT ABSENTE ET EST NÉCESSAIRE POUR EXCEL ---
+    function envoyerResultat(pseudoJoueur, scoreFinal) {
+    // L'URL unique qui centralise tout
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbys_uz58mt03TDr5gthhtJIeZJqqJDTuikaHwUa60o2rp3S4jIOeuABIrjWyfUDuhEdLg/exec";
+    
+    const data = {
+        nom: pseudoJoueur,   // On utilise "nom" car c'est ce que votre index et script attendent
+        score: scoreFinal * 10, 
+        sujet: document.title // Récupère automatiquement le titre de la page (ex: Monte Cristo)
+    };
+
+    fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors", 
+        cache: "no-cache",
+        body: JSON.stringify(data)
+    })
+    .then(() => {
+        console.log("Données envoyées !");
+    })
+    .catch((error) => {
+        console.error("Erreur :", error);
+    });
+}
+</script>
+</body>
+</html>
+
+
