@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Académie | Le Tour du Monde</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap');
+        body { font-family: 'Quicksand', sans-serif; background-color: #ebf2f7; margin: 0; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .game-card { width: 100%; max-width: 480px; background: white; height: 95vh; display: flex; flex-direction: column; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; }
+        
+        /* En-tête cliquable */
+        .header-nav-btn { cursor: pointer; transition: all 0.2s; padding: 4px 8px; border-radius: 8px; }
+        .header-nav-btn:hover { background-color: #f0f9ff; }
+
+        .img-box { width: 100%; height: 25vh; background: #e67e22; display: flex; align-items: center; justify-content: center; overflow: hidden; border-bottom: 1px solid #f1f5f9; position: relative; }
+        .img-box i { color: rgba(255,255,255,0.2); font-size: 5rem; }
+        
+        .quiz-body { padding: 20px; flex: 1; display: flex; flex-direction: column; text-align: center; }
+        .question-text { font-size: 1.15rem; font-weight: 800; color: #1e293b; margin: 10px 0; min-height: 3.5rem; line-height: 1.3; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+        .opt-btn { background: #fdfdfd; border: 2px solid #e2e8f0; padding: 14px 8px; border-radius: 16px; font-weight: 700; color: #475569; cursor: pointer; transition: all 0.2s; min-height: 60px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
+        
+        /* Animations de réponse */
+        .animate-error { animation: shake 0.4s ease-in-out; border-color: #ef4444 !important; background: #fef2f2 !important; color: #b91c1c !important; }
+        .animate-correct { animation: pop 0.4s ease-in-out; border-color: #22c55e !important; background: #f0fdf4 !important; color: #15803d !important; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-8px); } 60% { transform: translateX(8px); } }
+        @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
+
+        .feedback-box { display: none; margin-top: 15px; padding: 12px; border-radius: 15px; font-size: 0.85rem; line-height: 1.4; font-weight: 600; text-align: left; }
+        .is-correct { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+        .is-wrong { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+        .btn-next { background: #e67e22; color: white; width: 100%; padding: 16px; border-radius: 18px; font-weight: 800; text-transform: uppercase; margin-top: auto; box-shadow: 0 4px 0 #d35400; display: none; cursor: pointer; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="game-card">
+        <header class="p-4 flex justify-between items-center border-b border-slate-100">
+            <div onclick="window.location.href='index.html'" class="header-nav-btn flex items-center gap-2 text-orange-600 font-black text-sm uppercase">
+                <i class="fas fa-clock"></i> Mon Académie
+            </div>
+            <span id="lvl-display" class="bg-orange-50 text-orange-600 text-[10px] font-bold px-3 py-1 rounded-full border border-orange-100 uppercase">Chapitre 1</span>
+        </header>
+
+        <div class="h-1.5 bg-slate-100"><div id="progress-bar" class="h-full bg-orange-500 w-0 transition-all duration-500"></div></div>
+        
+        <div class="img-box">
+            <i class="fas fa-user-tie"></i>
+            <div class="absolute inset-0 flex items-center justify-center text-white font-black text-xl bg-black/20 uppercase tracking-widest text-center px-4">
+                Fogg & Passepartout
+            </div>
+        </div>
+
+        <div class="quiz-body" id="quiz-ui">
+            <div id="q-counter" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Question 1 / 10</div>
+            <h2 id="q-text" class="question-text">Chargement...</h2>
+            <div id="grid" class="options-grid"></div>
+            <div id="feedback" class="feedback-box"></div>
+            <div id="next-btn" onclick="goToNext()" class="btn-next">Continuer <i class="fas fa-arrow-right ml-2"></i></div>
+        </div>
+    </div>
+
+<script>
+    const quizData = [
+        { q: "Phileas Fogg est un homme ________ (qui garde son calme).", opts: ["Expansif", "Flegmatique", "Communicatif", "Galant"], r: "Flegmatique", def: "FLEGMATIQUE : Calme, imperturbable en toutes circonstances." },
+        { q: "Passepartout a une force ________ (très grande).", opts: ["Sédentaire", "Soigneusement", "Herculéenne", "Superflue"], r: "Herculéenne", def: "HERCULÉENNE : Une force physique digne du héros Hercule." },
+        { q: "Fogg est l'homme le plus ________ (qui ne bouge pas) de Londres.", opts: ["Sédentaire", "Expansif", "Écuyer", "Galant"], r: "Sédentaire", def: "SÉDENTAIRE : Se dit d'une personne qui voyage peu et reste chez elle." },
+        { q: "Passepartout a été ________ (acrobate à cheval).", opts: ["Gentleman", "Domestique", "Écuyer", "Pendule"], r: "Écuyer", def: "ÉCUYER : Ici, un artiste de cirque qui réalise des acrobaties à cheval." },
+        { q: "Fogg ne fait aucun mouvement ________ (inutile).", opts: ["Incontestablement", "Superflu", "Communicatif", "Galant"], r: "Superflu", def: "SUPERFLU : Ce qui est en trop, ce qui ne sert à rien." },
+        { q: "Il est ________ riche, mais discret.", opts: ["Incontestablement", "Soigneusement", "Galant", "Flegmatique"], r: "Incontestablement", def: "INCONTESTABLEMENT : Que l'on ne peut pas contester, c'est certain." },
+        { q: "Il observe ________ (avec attention) son maître.", opts: ["Expansif", "Soigneusement", "Herculéen", "Superflu"], r: "Soigneusement", def: "SOIGNEUSEMENT : En faisant les choses avec beaucoup de soin." },
+        { q: "Le poste de ________ (serviteur) lui plaît.", opts: ["Écuyer", "Domestique", "Gentleman", "Pendule"], r: "Domestique", def: "DOMESTIQUE : Personne employée pour le service de la maison." },
+        { q: "Fogg est un ________ (homme distingué).", opts: ["Écuyer", "Domestique", "Gentleman", "Pendule"], r: "Gentleman", def: "GENTLEMAN : Homme qui se comporte avec distinction et élégance." },
+        { q: "Il regarde la ________ (horloge) pour l'heure exacte.", opts: ["Écuyer", "Domestique", "Gentleman", "Pendule"], r: "Pendule", def: "PENDULE : Horloge fixée à un mur qui fonctionne avec un balancier." }
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+
+    window.onload = () => loadQuestion();
+
+    function loadQuestion() {
+        const data = quizData[currentQ];
+        document.getElementById('q-text').innerText = data.q;
+        document.getElementById('q-counter').innerText = `Question ${currentQ + 1} / 10`;
+        document.getElementById('progress-bar').style.width = ((currentQ / 10) * 100) + "%";
+        
+        const grid = document.getElementById('grid');
+        grid.innerHTML = "";
+        
+        data.opts.forEach(choice => {
+            const btn = document.createElement('div');
+            btn.className = "opt-btn";
+            btn.innerText = choice;
+            btn.onclick = () => verify(btn, choice, data.r, data.def);
+            grid.appendChild(btn);
+        });
+
+        document.getElementById('feedback').style.display = 'none';
+        document.getElementById('next-btn').style.display = 'none';
+    }
+
+    function verify(el, choice, correct, definition) {
+        const fb = document.getElementById('feedback');
+        document.querySelectorAll('.opt-btn').forEach(b => b.onclick = null);
+        fb.style.display = 'block';
+
+        if (choice === correct) {
+            el.classList.add('animate-correct');
+            fb.className = "feedback-box is-correct";
+            fb.innerHTML = `✅ CORRECT ! <br> ${definition}`;
+            score++;
+        } else {
+            el.classList.add('animate-error');
+            fb.className = "feedback-box is-wrong";
+            fb.innerHTML = `❌ ERREUR <br> ${definition}`;
+            document.querySelectorAll('.opt-btn').forEach(b => {
+                if(b.innerText === correct) b.style.borderColor = "#22c55e";
+            });
+        }
+        document.getElementById('next-btn').style.display = 'block';
+    }
+
+    function goToNext() {
+        currentQ++;
+        if (currentQ < quizData.length) {
+            loadQuestion();
+        } else {
+            showEnd();
+        }
+    }
+
+   function showEnd() {
+    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+    
+    // 1. On demande le nom pour le classement
+    const pseudo = prompt("Bravo ! Ton nom pour le classement :") || "Anonyme";
+    
+    // 2. On appelle la fonction d'envoi (qu'on va créer juste après)
+    envoyerResultat(pseudo, score);
+
+    document.getElementById('quiz-ui').innerHTML = `
+        <div class="py-10">
+            <div class="text-6xl mb-4">🎩</div>
+            <h2 class="text-2xl font-black text-slate-700 uppercase">Chapitre 1 Validé !</h2>
+            <p class="text-lg font-bold text-orange-600 mt-2">Score : ${score} / 10</p>
+            <div class="mt-6 p-4 bg-slate-50 rounded-xl text-sm font-bold text-slate-500">
+                ${score >= 8 ? "Bravo ! Tu connais Fogg comme si tu étais Passepartout !" : "C'est un bon début !"}
+            </div>
+            <p class="text-[10px] text-slate-400 mt-4">Ton score a été enregistré.</p>
+            <button onclick="window.location.href='index.html'" class="mt-8 bg-orange-500 text-white px-10 py-4 rounded-2xl font-black shadow-lg uppercase tracking-wide w-full">
+                Voir le classement
+            </button>
+        </div>`;
+}
+function envoyerResultat(pseudoJoueur, scoreFinal) {
+    // L'URL unique qui centralise tout
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbys_uz58mt03TDr5gthhtJIeZJqqJDTuikaHwUa60o2rp3S4jIOeuABIrjWyfUDuhEdLg/exec";
+    
+    const data = {
+        nom: pseudoJoueur,   // On utilise "nom" car c'est ce que votre index et script attendent
+        score: scoreFinal * 10, 
+        sujet: document.title // Récupère automatiquement le titre de la page (ex: Monte Cristo)
+    };
+
+    fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors", 
+        cache: "no-cache",
+        body: JSON.stringify(data)
+    })
+    .then(() => {
+        console.log("Données envoyées !");
+    })
+    .catch((error) => {
+        console.error("Erreur :", error);
+    });
+}
+</script>
+</body>
+</html>
