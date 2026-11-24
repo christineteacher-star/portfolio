@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Page introuvable – 404 | Francours</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(135deg, #eef6f7 0%, #d9eef0 100%);
+      color: #22313f;
+      padding: 24px;
+    }
+
+    .carte {
+      background: #ffffff;
+      max-width: 560px;
+      width: 100%;
+      border-radius: 18px;
+      padding: 48px 36px;
+      text-align: center;
+      box-shadow: 0 12px 40px rgba(34, 49, 63, 0.12);
+    }
+
+    .code {
+      font-size: 110px;
+      font-weight: 800;
+      line-height: 1;
+      color: #3aa6a8;
+      letter-spacing: 4px;
+    }
+
+    .code span { color: #f2a541; }
+
+    h1 {
+      font-size: 26px;
+      margin: 18px 0 12px;
+    }
+
+    p {
+      font-size: 17px;
+      line-height: 1.6;
+      color: #4a5a68;
+    }
+
+    .conjugaison {
+      margin: 26px auto;
+      padding: 16px 20px;
+      background: #f6fbfb;
+      border-left: 4px solid #3aa6a8;
+      border-radius: 8px;
+      text-align: left;
+      font-size: 16px;
+      line-height: 1.8;
+      max-width: 340px;
+    }
+
+    .conjugaison strong { color: #3aa6a8; }
+
+    .boutons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    }
+
+    .btn-principal { background: #3aa6a8; color: #fff; }
+    .btn-secondaire { background: #fff; color: #3aa6a8; border: 2px solid #3aa6a8; }
+
+    .langues {
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: 1px solid #e3ecee;
+      font-size: 14px;
+      color: #7a8a97;
+      line-height: 1.8;
+    }
+
+    .langues .ar { direction: rtl; }
+
+    @media (max-width: 480px) {
+      .carte { padding: 36px 22px; }
+      .code { font-size: 80px; }
+      h1 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="carte">
+    <div class="code">4<span>0</span>4</div>
+
+    <h1>Oups ! Cette page est introuvable.</h1>
+    <p>La page que vous cherchez n'existe pas ou a été déplacée.<br>
+       Pas de panique : même au TCF, on a le droit à l'erreur !</p>
+
+    <div class="conjugaison">
+      Je <strong>cherche</strong>,<br>
+      tu <strong>cherches</strong>,<br>
+      nous ne <strong>trouvons</strong> pas…<br>
+      mais vous allez <strong>retrouver</strong> votre chemin !
+    </div>
+
+    <div class="boutons">
+      <a class="btn btn-principal" href="/">Retour à l'accueil</a>
+      <a class="btn btn-secondaire" href="javascript:history.back()">Page précédente</a>
+    </div>
+
+    <div class="langues">
+      <div>Page not found. Go back to the home page.</div>
+      <div class="ar">الصفحة غير موجودة. يرجى العودة إلى الصفحة الرئيسية.</div>
+    </div>
+  </main>
+</body>
+</html>
