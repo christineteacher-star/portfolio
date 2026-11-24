@@ -121,7 +121,402 @@
       tu <strong>cherches</strong>,<br>
       nous ne <strong>trouvons</strong> pas…<br>
       mais vous allez <strong>retrouver</strong> votre chemin !
+    </div><!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christine Saintobin — Portfolio</title>
+    
+    <!-- Polices Google Fonts et Icônes FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;1,400&family=Caveat:wght@600&display=swap');
+
+        html, body { 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: #f9f9f9; 
+            color: #1a1a1a; 
+        }
+
+        /* En-tête avec les branches et feuilles allongées en gris clair uniquement derrière Francours */
+        .header-bg {
+            background-color: #fff;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='230' height='145' viewBox='0 0 230 145'%3E%3Cg stroke-linecap='round' stroke-linejoin='round'%3E%3C!-- Branche d'arrière-plan très claire --%3E%3Cg opacity='0.45'%3E%3Cpath d='M 65 -8 Q 120 35 205 68' fill='none' stroke='%23b5b5b5' stroke-width='1.5'/%3E%3Cpath d='M 85 8 Q 108 -4 142 -2 Q 112 12 85 8 Z' fill='%23cccccc'/%3E%3Cpath d='M 98 16 Q 82 42 88 70 Q 104 44 98 16 Z' fill='%23cccccc'/%3E%3Cpath d='M 122 30 Q 150 16 186 18 Q 154 34 122 30 Z' fill='%23cccccc'/%3E%3Cpath d='M 136 36 Q 124 64 134 94 Q 146 66 136 36 Z' fill='%23cccccc'/%3E%3Cpath d='M 162 48 Q 192 36 225 42 Q 194 56 162 48 Z' fill='%23cccccc'/%3E%3Cpath d='M 178 54 Q 172 80 186 106 Q 192 80 178 54 Z' fill='%23cccccc'/%3E%3C/g%3E%3C!-- Branche secondaire gauche douce --%3E%3Cg opacity='0.65'%3E%3Cpath d='M -10 15 Q 25 45 45 95' fill='none' stroke='%23b0b0b0' stroke-width='1.5'/%3E%3Cpath d='M 5 28 Q 28 24 55 34 Q 28 40 5 28 Z' fill='%23c4c4c4'/%3E%3Cpath d='M 12 34 Q -6 56 -4 88 Q 12 62 12 34 Z' fill='%23c4c4c4'/%3E%3Cpath d='M 28 58 Q 52 56 76 68 Q 50 72 28 58 Z' fill='%23c4c4c4'/%3E%3Cpath d='M 34 65 Q 20 88 26 118 Q 40 92 34 65 Z' fill='%23c4c4c4'/%3E%3C/g%3E%3C!-- Branche principale gris clair au premier plan --%3E%3Cg%3E%3Cpath d='M 8 -6 Q 68 50 158 110' fill='none' stroke='%23999999' stroke-width='2'/%3E%3Cpath d='M 28 10 Q 56 -4 94 4 Q 60 18 28 10 Z' fill='%23b5b5b5'/%3E%3Cpath d='M 38 18 Q 20 50 30 86 Q 44 52 38 18 Z' fill='%23b5b5b5'/%3E%3Cpath d='M 60 36 Q 94 18 134 24 Q 98 42 60 36 Z' fill='%23b5b5b5'/%3E%3Cpath d='M 70 44 Q 54 80 68 118 Q 80 82 70 44 Z' fill='%23b5b5b5'/%3E%3Cpath d='M 96 62 Q 130 46 172 54 Q 134 70 96 62 Z' fill='%23b5b5b5'/%3E%3Cpath d='M 106 70 Q 92 104 108 132 Q 118 102 106 70 Z' fill='%23b5b5b5'/%3E%3Cpath d='M 132 88 Q 166 74 206 84 Q 168 98 132 88 Z' fill='%23b5b5b5'/%3E%3Cpath d='M 142 94 Q 132 118 150 136 Q 156 112 142 94 Z' fill='%23b5b5b5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: top left;
+            border-bottom: 1px solid #eaeaea;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+
+        .header-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .speech-bubble-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 10;
+        }
+
+        .speech-bubble {
+            position: relative;
+            background: radial-gradient(circle at 30% 30%, #ff5252, #b22222);
+            color: #fff;
+            width: 160px;
+            height: 90px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 15px rgba(178, 34, 34, 0.35);
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 10px;
+            width: 0;
+            height: 0;
+            border-top: 15px solid #b22222;
+            border-left: 20px solid transparent;
+            transform: rotate(25deg);
+        }
+
+        .brand-title {
+            font-family: 'Caveat', cursive, sans-serif;
+            font-size: 2.3em;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .slogan {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.4em;
+            color: #444;
+        }
+
+        /* MENU DU HAUT : Carré rouge brillant au survol */
+        nav { 
+            text-transform: uppercase; 
+            font-size: 0.8em; 
+            letter-spacing: 1.5px;
+            display: flex;
+            gap: 8px;
+        }
+
+        nav a { 
+            text-decoration: none; 
+            color: #555; 
+            padding: 10px 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease; 
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        nav a:hover, nav a.active { 
+            background: radial-gradient(circle at 30% 30%, #ff5252, #b22222);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(178, 34, 34, 0.35);
+        }
+
+        .container { 
+            max-width: 1100px; 
+            margin: 0 auto; 
+            padding: 0 20px; 
+        }
+
+        .layout-grid {
+            display: flex;
+            gap: 40px;
+            background: #fff;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-radius: 4px;
+        }
+
+        .sidebar {
+            flex: 1;
+            max-width: 280px;
+            border-right: 1px solid #eee;
+            padding-right: 25px;
+        }
+
+        .sidebar h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3em;
+            color: #b22222;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #b22222;
+            padding-bottom: 5px;
+            display: inline-block;
+        }
+
+        .sidebar-box {
+            margin-bottom: 25px;
+            font-size: 0.9em;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+            margin-top: 5px;
+            flex-wrap: wrap;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: #f1f1f1;
+            color: #b22222;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .social-links a:hover {
+            background: radial-gradient(circle at 30% 30%, #ff5252, #b22222);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(178, 34, 34, 0.25);
+        }
+
+        .main-content {
+            flex: 2;
+            min-width: 0;
+        }
+
+        /* NOM CHRISTINE SAINTOBIN AVEC LA POLICE CAVEAT */
+        h1 { 
+            font-family: 'Caveat', cursive, sans-serif; 
+            font-size: 3.5em; 
+            margin: 0 0 10px 0; 
+            color: #b22222;
+            line-height: 1.1;
+        }
+
+        .intro-text { 
+            font-size: 1em; 
+            font-weight: 300; 
+            color: #444; 
+            margin-bottom: 25px; 
+            line-height: 1.6;
+        }
+
+        /* CARROUSEL : 7s PAR IMAGE (28s TOTAL) + BOUCLE INFINIE SANS RETOUR ARRIÈRE */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 7.5;
+            overflow: hidden;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background-color: #fff;
+        }
+
+        .carousel-slide {
+            display: flex;
+            width: 500%; /* 4 images + 1 clone de la 1re image pour la boucle fluide */
+            height: 100%;
+            animation: slideAnimation 28s infinite ease-in-out;
+        }
+
+        .carousel-container:hover .carousel-slide {
+            animation-play-state: paused;
+        }
+
+        .carousel-slide img {
+            width: 20%; /* 100% / 5 images */
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* 28s au total = 7s par slide (environ 6.1s fixe + 0.9s de glissement vers la gauche) */
+        @keyframes slideAnimation {
+            0%, 21.8%    { transform: translateX(0%); }
+            25%, 46.8%   { transform: translateX(-20%); }
+            50%, 71.8%   { transform: translateX(-40%); }
+            75%, 96.8%   { transform: translateX(-60%); }
+            100%         { transform: translateX(-80%); }
+        }
+
+        .quote { 
+            font-family: 'Playfair Display', serif; 
+            font-style: italic; 
+            color: #b22222; 
+            font-size: 1.1em; 
+            margin-bottom: 25px;
+            border-left: 3px solid #b22222;
+            padding-left: 15px;
+        }
+
+        .cta-group { 
+            display: flex; 
+            gap: 10px; 
+            flex-wrap: wrap;
+        }
+        
+        .cta-link { 
+            text-decoration: none; 
+            color: #fff; 
+            background: radial-gradient(circle at 30% 30%, #ff5252, #b22222);
+            font-size: 0.75em; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            padding: 10px 18px; 
+            border-radius: 4px;
+            transition: 0.3s; 
+            display: inline-block;
+            box-shadow: 0 4px 10px rgba(178, 34, 34, 0.25);
+        }
+        
+        .cta-link:hover { 
+            background: #1a1a1a; 
+            box-shadow: none;
+        }
+
+        /* PIED DE PAGE (MENU DU BAS) */
+        footer { 
+            background-color: #ffffff;
+            color: #666;
+            text-align: center; 
+            font-size: 0.75em; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            padding: 25px 0;
+            margin-top: 40px;
+            border-top: 1px solid #eaeaea;
+            transition: all 0.3s ease;
+        }
+
+        footer:hover {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        @media (max-width: 900px) {
+            .header-container { flex-direction: column; gap: 20px; align-items: center; }
+            nav { flex-wrap: wrap; justify-content: center; }
+            .layout-grid { flex-direction: column; }
+            .sidebar { max-width: 100%; border-right: none; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-bg">
+        <div class="header-container">
+            <!-- Bulle rouge brillant + Slogan -->
+            <div class="speech-bubble-wrapper">
+                <div class="speech-bubble">
+                    <span class="brand-title">Francours</span>
+                </div>
+                <span class="slogan">French at your own pace!</span>
+            </div>
+
+            <!-- Menu haut -->
+            <nav>
+                <a href="index.html" class="active">Accueil</a>
+                <a href="philosophie.html">Philosophie</a>
+                <a href="projets.html">Projets</a>
+                <a href="sequences.html">Séquences</a>
+                <a href="academie/index.html">Académie</a>
+            </nav>
+        </div>
     </div>
+
+    <div class="container">
+        <div class="layout-grid">
+            
+            <!-- Colonne gauche -->
+            <aside class="sidebar">
+                <div class="sidebar-box">
+                    <h2>Bienvenue !</h2>
+                    <p>Découvrez mon approche pédagogique combinant méthodes classiques et innovations technologiques.</p>
+                </div>
+
+                <div class="sidebar-box">
+                    <h2>Accès Rapide</h2>
+                    <p>Retrouvez toutes les activités, séquences d'apprentissage et supports pour les élèves de CE2.</p>
+                </div>
+
+                <!-- Bloc Me Suivre -->
+                <div class="sidebar-box">
+                    <h2>Me Suivre</h2>
+                    <div class="social-links">
+                        <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" title="Amazon"><i class="fab fa-amazon"></i></a>
+                        <a href="#" title="Udemy"><i class="fa-solid fa-graduation-cap"></i></a>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Colonne principale avec carrousel -->
+            <main class="main-content">
+                <h1>Christine Saintobin</h1>
+                
+                <!-- Carrousel d'images (boucle infinie vers la gauche) -->
+                <div class="carousel-container">
+                    <div class="carousel-slide">
+                        <img src="carrousel-assistante-dentaire.jpg" alt="Français sur objectif spécifique - Assistante Dentaire">
+                        <img src="carrousel-learn-french.jpg" alt="Learn French from A1 to B2 - TEF & TCF Canada">
+                        <img src="pub_carousel_fr_2000x1200.png" alt="Novella policière - Blackburne Shilling Gambit par Christine Saintobin">
+                        <img src="carrousel-professeurs.jpg" alt="Français sur objectif spécifique - Professeur en classe">
+                        <!-- Copie de la 1re image pour assurer une boucle continue sans retour en arrière -->
+                        <img src="carrousel-assistante-dentaire.jpg" alt="Français sur objectif spécifique - Assistante Dentaire">
+                    </div>
+                </div>
+
+                <div class="intro-text">
+                    Enseignante de Français & Innovatrice. Je fusionne pédagogie classique et outils immersifs pour transformer l'apprentissage en expérience mémorable.
+                </div>
+
+                <p class="quote">
+                    "Libérez le potentiel de l’enfant et vous transformerez le monde avec lui."
+                </p>
+
+                <div class="cta-group">
+                    <a href="album-ce2.html" class="cta-link">Album Photos CE2</a>
+                    <a href="https://christineteacher-star.github.io/revision/index.html" class="cta-link">Espace Numérique</a>
+                    <a href="cv.html" class="cta-link">Parcours Professionnel</a>
+                </div>
+            </main>
+
+        </div>
+    </div>
+
+    <!-- Pied de page -->
+    <footer>© 2026 Christine Saintobin</footer>
+
+</body>
+</html>
+
 
     <div class="boutons">
       <a class="btn btn-principal" href="/">Retour à l'accueil</a>
